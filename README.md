@@ -1,11 +1,8 @@
 NodeJs + MongoDB + GraphQL 
 ----------------------------------
-_A boilerplate for Node.js, MongoDB & GraphQL applications._
 
-:bulb: ES6 code
-
-original version form [https://github.com/ailoitte/node-mongodb-graphql-starter](https://github.com/ailoitte/node-mongodb-graphql-starter)
-
+Original version form [https://github.com/ailoitte/node-mongodb-graphql-starter](https://github.com/ailoitte/node-mongodb-graphql-starter)
+Use with react-graphql frontend [https://github.com/sushingg/TechE-React](https://github.com/sushingg/TechE-React)
 
 Table of Contents
 -----------------
