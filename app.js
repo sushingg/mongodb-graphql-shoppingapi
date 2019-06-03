@@ -3,6 +3,7 @@
  * @type {createApplication}
  */
 const express = require('express');
+const voyagerMiddleware = require('graphql-voyager/middleware').express;
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const fs = require('fs');
@@ -26,7 +27,7 @@ const GraphQLSchema = require('./graphql');
  *
  * Default path: .env (You can remove the path argument entirely, after renaming `.env.example` to `.env`)
  */
-dotenv.load({path: '.env'});
+dotenv.config()
 
 //const UploadProfilePicture = require('./middleware/uploadProfilePicture');
 
@@ -38,19 +39,19 @@ const app = express();
 /**
  * Connect to MongoDB.
  */
-mongoose.connect(process.env.MONGODB, {
-    useMongoClient: true
-});
+mongoose.connect(process.env.MONGODB, { useNewUrlParser: true });
 mongoose.connection.on('error', function () {
     console.log('MongoDB Connection Error. Please make sure that MongoDB is running.');
     process.exit(1);
 });
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 mongoose.set('debug', true);
 
 /**
  * Express configuration.
  */
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 4000);
 
 app.use(logger('dev'));
 
@@ -75,6 +76,7 @@ app.use('/graphql', async (req, res, done) => {
     req.context = {
         user: user,
     }
+        
     done();
 });
 //app.use('/graphql', UploadProfilePicture);
@@ -85,6 +87,7 @@ app.use('/graphql', expressGraphQL(req => ({
     })
 ));
 // =========== GraphQL setting END ========== //
+app.use('/voyager', voyagerMiddleware({ endpointUrl: '/graphql' }));
 
 /**
  * Start Express server.

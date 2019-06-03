@@ -20,29 +20,29 @@ const UserType = new GraphQL.GraphQLObjectType({
 			type: GraphQLID,
 			description: 'ID of the address, Generated automatically by MongoDB',
 		},
-        street: {
-            type:  new GraphQLList(GraphQLString),
-			description: 'Address streets',
-		},
-        city: {
+        firstName: {
 			type: GraphQLString,
-			description: 'Address city',
+			description: 'Address firstname',
 		},
-        countryId: {
+        lastName: {
 			type: GraphQLString,
-			description: 'Address country id',
+			description: 'Address lastname',
 		},
-        locality: {
+        addr: {
 			type: GraphQLString,
-			description: 'Address locality',
+			description: 'Address',
 		},
-        landmark: {
+        distric: {
 			type: GraphQLString,
-			description: 'Address landmark',
+			description: 'Address disctric',
 		},
-        addressType: {
+		province: {
 			type: GraphQLString,
-			description: 'Address addressType',
+			description: 'Address province',
+		},
+		mobileNumber: {
+			type: GraphQLString,
+			description: 'Address mobile number',
 		},
         postcode: {
 			type: GraphQLString,

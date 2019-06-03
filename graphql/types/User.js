@@ -10,7 +10,7 @@ const {
 
 const Generic = require('./Generic');
 const Address = require('./Address');
-
+const Order = require('./Order');
 
 const UserType = new GraphQL.GraphQLObjectType({
 	name: 'User',
@@ -59,6 +59,11 @@ const UserType = new GraphQL.GraphQLObjectType({
 			description: 'Status of the user, whether active or disabled',
 		},
 
+		type: {
+			type: GraphQLString,
+			description: 'Type of the user, is user, staff or admin',
+		},
+
         dob: {
 			type: GraphQLString,
 			description: 'Date of birth in 1992-01-02',
@@ -73,6 +78,12 @@ const UserType = new GraphQL.GraphQLObjectType({
 			type: new GraphQLList(Address),
 			description: 'User address',
 		},
+
+		order: {
+			type: new GraphQLList(Order),
+			description: 'User order',
+		},
+
 		createdAt: {
 			type: GraphQLString,
 			description: 'Generate system to allow user to have secure resource access',

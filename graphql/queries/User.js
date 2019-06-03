@@ -48,8 +48,7 @@ module.exports = {
 		return {
 			type: UserType,
 			description: 'This will return current user profile details',
-			resolve(parent, args, context, info){
-				
+			resolve(parent, args, context, info){				
                 if (auth.isAuthenticated(context)) {
                     return context.user;
                 }

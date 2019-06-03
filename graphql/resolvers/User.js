@@ -21,24 +21,20 @@ class UserController {
 
     // this will find a single record based on username and return it.
     auth(options) {
-        return this.model.findOne({mobileNumber: options.mobileNumber})
+        return this.model.findOne({email: options.email})
             .exec()
             .then((user) => {
-
                 if (!user) {
                     return new Error('Invalid login credentials.');
                 }
-
                 if (bcrypt.compareSync(options.password, user.password)) {
                     return includeAccessToken(user);
                 } else {
                     return new Error('Invalid login credentials.');
                 }
-
             }).catch(error => {
                 return error;
             });
-
     }
 
     // this will find all the records in database and return it
@@ -71,7 +67,6 @@ class UserController {
         const record = new this.model(data);
         return record.save()
             .then((user) => {
-
                 var otp = option.generateOtp();
 
                 user.mobileVerificationOTP = otp;
@@ -88,8 +83,6 @@ class UserController {
                     .catch((error) => {
                         return error;
                     });
-
-
             })
             .catch((error) => {
                 return error;

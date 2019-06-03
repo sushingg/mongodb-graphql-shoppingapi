@@ -8,11 +8,12 @@ const {
 // import the user query file we created
 const UserQuery = require('./queries/User');
 const InitQuery = require('./queries/Init');
+const CategoryQuery = require('./queries/Category');
 
 // import the user mutation file we created
 const UserMutation = require('./mutations/User');
-
-
+const CategoryMutation = require('./mutations/Category')
+const ProductMutation = require('./mutations/Product')
 // lets define our root query
 const RootQuery = new GraphQLObjectType({
 	name: 'RootQueryType',
@@ -25,6 +26,9 @@ const RootQuery = new GraphQLObjectType({
 		user: UserQuery.single(),
 		me: UserQuery.me(),
 		userAddress: UserQuery.userAddress(),
+		//Category
+		categories:CategoryQuery.index(),
+		category:CategoryQuery.single(),
 	},
 });
 
@@ -41,7 +45,12 @@ const RootMutation = new GraphQLObjectType({
 		addDeviceTokenUser: UserMutation.fcm(),
 		addUserAddress: UserMutation.createAddress(),
 		updateUserAddress: UserMutation.updateAddress(),
-		deleteUserAddress: UserMutation.deleteAddress()
+		deleteUserAddress: UserMutation.deleteAddress(),
+		//Category
+		addCategory:CategoryMutation.create(),
+		addProduct:ProductMutation.create(),
+		updateProduct:ProductMutation.update(),
+		deleteProduct:ProductMutation.delete()
 	},
 });
 

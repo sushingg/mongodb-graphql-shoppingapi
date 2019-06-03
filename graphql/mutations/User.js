@@ -30,9 +30,9 @@ module.exports = {
             description: 'Add new User',
 
             args: {
-                mobileNumber: {
+                email: {
                     type: new GraphQLNonNull(GraphQLString),
-                    description: 'Mobile number cannot be left empty',
+                    description: 'Email cannot be left empty',
                 },
                 password: {
                     type: new GraphQLNonNull(GraphQLString),
