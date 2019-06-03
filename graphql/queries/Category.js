@@ -41,8 +41,8 @@ module.exports = {
 			resolve(parent, args, context, info) {
 				//console.log(info.variableValues)
 				//console.log(args)
-				//return CategoryResolver.single({ id: args.id });
-				return CategoryResolver.single(info.variableValues);
+				return CategoryResolver.single({ id: args.id });
+				//return CategoryResolver.single(info.variableValues);
 			}
 		}
 	}

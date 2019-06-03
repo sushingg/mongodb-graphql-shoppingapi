@@ -21,15 +21,15 @@ const UserType = new GraphQL.GraphQLObjectType({
 			type: GraphQLID,
 			description: 'ID of the Order, Generated automatically by MongoDB',
 		},
-        PaymentId: {
+        paymentId: {
             type:  GraphQLString,
 			description: 'Order payment id',
 		},
-        Total: {
+        total: {
 			type: GraphQLInt,
 			description: 'Order total',
 		},
-		Status: {
+		status: {
 			type: GraphQLInt,
 			description: 'Order status',
 		},

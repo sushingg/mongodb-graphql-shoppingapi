@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../../models/User');
 const option = require('../../config/options');
 const moment = require('moment');
-
+const Product = require("../../models/Product");
 const includeAccessToken = (user) => {
     const payload = {id: user.id, username: user.username};
     let userObject = user.toJSON();
@@ -40,7 +40,8 @@ class UserController {
     // this will find all the records in database and return it
     index() {
         return this.model.find()
-            .sort('createdAt')
+            .populate({path: 'order.orderProduct.product',model: 'Product'})
+            .sort('createdAt')            
             .exec()
             .then(records => {
                 return records;
@@ -222,7 +223,71 @@ class UserController {
                 return error;
             });
     }
+    // this will insert a new record in database
+    createOrder(user, data) {
 
+        return this.model.findById(user.id)
+            .populate({path: 'order.orderProduct.product',model: 'Product'})
+            .exec()
+            .then((record) => {
+                if (!record) {
+                    return new Error('Invalid request user does\'t exist.');
+                }
+                const order = record.order.create(data);
+                record.order.push(order);
+
+                return record.save()
+                    .then((updated) => {
+                       return this.model.findOne({ "order._id": order._id })
+                        .populate({path: 'order.orderProduct.product',model: 'Product'})
+                        .exec()
+                        .then((record) => {
+                            return record.order.id(order._id)
+                        })
+                        .catch((error) => {
+                            return error;
+                        });
+                    })
+                    .catch((error) => {
+                        return error;
+                    });
+
+            }).catch(error => {
+                return error;
+            });
+
+    }
+
+
+    // this will update existing record in database
+    updateOrder(user, data) {
+
+        return this.model.findOne({_id: user.id})
+            .exec()
+            .then((user) => {
+
+               let order = user.addorderress.id(data.id);
+
+               if(!order) throw new Error("Order not found");
+
+               delete data.id;
+                Object.keys(data).map(field => {
+                    order[field] = data[field];
+                });
+
+                return user.save()
+                    .then(user => {
+                        return order;
+                    })
+                    .catch((error) => {
+                        return error;
+                    });
+
+            })
+            .catch((error) => {
+                return error;
+            });
+    }
 
 
 }

@@ -11,12 +11,6 @@ var imageSchema = new mongoose.Schema(
   }
 );
 
-var tagSchema = new mongoose.Schema(
-  {
-    tag: String
-  }
-);
-
 var productSchema = new mongoose.Schema(
   {
     slug: { type: String, unique: true },
@@ -26,13 +20,24 @@ var productSchema = new mongoose.Schema(
     description: String,
     descriptionHtml: String,
     published: Boolean,
-    tags: [tagSchema],
     options: String,
     image: [imageSchema]
   },
   { timestamps: true, toObject: { virtuals: true }, toJSON: { virtuals: true } }
 );
 
+productSchema.pre("save", function(next) {
+  var product = this;
+  if (product.isModified("slug")) {
+    product.slug = slugify(product.slug, {
+      replacement: '-',    // replace spaces with replacement
+      remove: null,        // regex to remove characters
+      lower: true          // result in lower case
+    })
+    return next();
+  }
+
+});
 
 productSchema.plugin(mongoosePaginate);
 

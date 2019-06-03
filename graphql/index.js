@@ -9,6 +9,7 @@ const {
 const UserQuery = require('./queries/User');
 const InitQuery = require('./queries/Init');
 const CategoryQuery = require('./queries/Category');
+const ProductQuery = require('./queries/Product');
 
 // import the user mutation file we created
 const UserMutation = require('./mutations/User');
@@ -29,6 +30,9 @@ const RootQuery = new GraphQLObjectType({
 		//Category
 		categories:CategoryQuery.index(),
 		category:CategoryQuery.single(),
+		//Product
+		products:ProductQuery.index(),
+		product:ProductQuery.single()
 	},
 });
 
@@ -46,11 +50,22 @@ const RootMutation = new GraphQLObjectType({
 		addUserAddress: UserMutation.createAddress(),
 		updateUserAddress: UserMutation.updateAddress(),
 		deleteUserAddress: UserMutation.deleteAddress(),
+		addUserOrder:UserMutation.createOrder(),
+		updateUserOrder:UserMutation.updateOrder(),
 		//Category
 		addCategory:CategoryMutation.create(),
+		updateCategory:CategoryMutation.updateSubcategory(),
+		deleteCategory:CategoryMutation.delete(),
+		addSubCategory:CategoryMutation.createSubcategory(),
+		updateSubCategory:CategoryMutation.updateSubcategory(),
+		deleteSubCategory:CategoryMutation.deleteSubcategory(),
+		//Product
 		addProduct:ProductMutation.create(),
 		updateProduct:ProductMutation.update(),
-		deleteProduct:ProductMutation.delete()
+		deleteProduct:ProductMutation.delete(),
+		addProductImage:ProductMutation.createImage(),
+		updateProductImage:ProductMutation.updateImage(),
+		deleteProductImage:ProductMutation.deleteImage(),
 	},
 });
 

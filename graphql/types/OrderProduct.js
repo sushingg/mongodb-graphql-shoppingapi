@@ -9,7 +9,7 @@ const {
 } = GraphQL;
 
 const Generic = require('./Generic');
-
+ProductType = require('./Product')
 
 const UserType = new GraphQL.GraphQLObjectType({
 	name: 'OrderProduct',
@@ -25,7 +25,7 @@ const UserType = new GraphQL.GraphQLObjectType({
 			description: 'Product slug',
 		},
         title: {
-			type: GraphQLInt,
+			type: GraphQLString,
 			description: 'Product title',
 		},
         price: {
@@ -39,6 +39,10 @@ const UserType = new GraphQL.GraphQLObjectType({
         quantity: {
 			type: GraphQLInt,
 			description: 'Product quantity',
+		},
+		product: {
+			type: ProductType,
+			description: 'Product ref',
 		},
 		createdAt: {
 			type: GraphQLString,

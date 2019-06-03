@@ -19,22 +19,23 @@ var addressSchema = new mongoose.Schema(
 
 var orderProductSchema = new mongoose.Schema(
   {
-    Slug: String,
-    Title: String,
-    Price: Number,
-    Options: String,
-    quantity: Number
+    slug: String,
+    title: String,
+    price: Number,
+    options: String,
+    quantity: Number,
+    product:{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }
   },
   { timestamps: true }
 );
 
 var orderSchema = new mongoose.Schema(
   {
-    PaymentId: String,
-    Total: Number,
-    Status: String,
+    paymentId: String,
+    total: Number,
+    ptatus: String,
     address: [addressSchema],
-    Product: [orderProductSchema],
+    orderProduct: [orderProductSchema],
   },
   { timestamps: true }
 );

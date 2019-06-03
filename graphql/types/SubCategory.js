@@ -8,7 +8,7 @@ const {
     GraphQLList,
 } = GraphQL;
 
-Product = require('./Product');
+ProductType = require('./Product');
 
 const SubCategoryType = new GraphQL.GraphQLObjectType({
 	name: 'SubCategory',
@@ -28,7 +28,7 @@ const SubCategoryType = new GraphQL.GraphQLObjectType({
 			description: 'SubCategory title',
 		},
 		product: {
-			type: new GraphQLList(Product),
+			type: new GraphQLList(ProductType),
 			description: 'Category product',
 		},
 		createdAt: {

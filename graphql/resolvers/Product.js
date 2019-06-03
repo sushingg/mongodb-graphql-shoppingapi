@@ -117,22 +117,22 @@ class ProductController {
   }
 
   // this will insert a new record in database
-  createImage(user, data) {
+  createImage(data) {
     return this.model
-      .findById(user.id)
+      .findById(data.id)
       .exec()
       .then(record => {
         if (!record) {
           return new Error("Invalid request user does't exist.");
         }
-
-        const image = record.image.create(data);
+        console.log(record)
+        const image = record.image.create(data.image);
         record.image.push(image);
 
         return record
           .save()
           .then(updated => {
-            return image;
+            return updated;
           })
           .catch(error => {
             return error;
@@ -144,24 +144,25 @@ class ProductController {
   }
 
   // this will update existing record in database
-  updateImage(user, data) {
+  updateImage(data) {
     return this.model
-      .findOne({ _id: user.id })
+      .findOne({ "image._id": data.id })
       .exec()
-      .then(user => {
-        let image = user.image.id(data.id);
+      .then(record => {
+        
+        let image = record.image.id(data.id);
 
         if (!image) throw new Error("Image not found");
-
+        console.log(image)
         delete data.id;
-        Object.keys(data).map(field => {
-          image[field] = data[field];
+        Object.keys(data.image).map(field => {
+          image[field] = data.image[field];
         });
 
-        return user
+        return record
           .save()
-          .then(user => {
-            return image;
+          .then(record => {
+            return record;
           })
           .catch(error => {
             return error;
@@ -173,15 +174,15 @@ class ProductController {
   }
 
   // this will delete the user image
-  deleteImage(user, data) {
+  deleteImage(data) {
     return this.model
-      .findOne({ _id: user.id })
+      .findOne({ "image._id": data.id })
       .exec()
-      .then(user => {
-        user.image.pull(data.id);
-        return user
+      .then(record => {
+        record.image.pull(data.id);
+        return record
           .save()
-          .then(user => {
+          .then(record => {
             return { message: "Image deleted successfully!" };
           })
           .catch(error => {

@@ -109,4 +109,63 @@ module.exports = {
       }
     };
   },
+  createImage() {
+    return {
+      type: ProductType,
+      description: "Add new Image",
+      args: {
+        id: {
+          type: new GraphQLNonNull(GraphQLString),
+          description: "Product id"
+        },
+        image: {
+          type: Generic.ImageInput,
+          description: "Enter image"
+        }
+      },
+      resolve(parent, fields, context, info) {
+        if (auth.isAuthenticated(context)) {
+          return ProductResolver.createImage(fields);
+        }
+      }
+    };
+  },
+  updateImage() {
+    return {
+      type: ProductType,
+      description: "Update Image details",
+      args: {
+        id: {
+          type: new GraphQLNonNull(GraphQLString),
+          description: "Image id"
+        },
+        image: {
+          type: Generic.ImageInput,
+          description: "Enter image"
+        }
+      },
+      resolve(parent, fields, context, info) {
+        if (auth.isAuthenticated(context)) {
+          return ProductResolver.updateImage(fields);
+        }
+      }
+    }
+  },
+  deleteImage() {
+    return {
+      type: Generic.messageOutputType,
+      description: "Delete Image",
+      args: {
+        id: {
+          type: new GraphQLNonNull(GraphQLString),
+          description: "Id of Image to delete"
+        }
+      },
+      resolve(parent, fields, context, info) {
+        if (auth.isAuthenticated(context)) {
+          return ProductResolver.deleteImage(fields);
+        }
+      }
+    };
+  },
 };

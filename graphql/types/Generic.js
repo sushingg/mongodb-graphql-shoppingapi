@@ -47,6 +47,9 @@ exports.Image = new GraphQLObjectType({
   name: "Image",
   description: "Image Type",
   fields: () => ({
+    id: {
+			type: GraphQLID
+		},
     altText: {
       type: GraphQLString
     },
@@ -129,4 +132,76 @@ exports.ProductInputType = new GraphQL.GraphQLInputObjectType({
       description: "Product option"
     }
   })
+});
+
+exports.AddressInputType = new GraphQL.GraphQLInputObjectType({
+	name: 'Addressinput',
+	description: 'Address type for managing all the user\'s address in our application.',
+
+	fields: () => ({
+        firstName: {
+			type: GraphQLString,
+			description: 'Address firstname',
+		},
+        lastName: {
+			type: GraphQLString,
+			description: 'Address lastname',
+		},
+        addr: {
+			type: GraphQLString,
+			description: 'Address',
+		},
+        distric: {
+			type: GraphQLString,
+			description: 'Address disctric',
+		},
+		province: {
+			type: GraphQLString,
+			description: 'Address province',
+		},
+		mobileNumber: {
+			type: GraphQLString,
+			description: 'Address mobile number',
+		},
+        postcode: {
+			type: GraphQLString,
+			description: 'Address postcode',
+		}
+
+	})
+
+});
+
+exports.OrderProductInputType = new GraphQL.GraphQLInputObjectType({
+	name: 'OrderProductinput',
+	description: 'OrderProduct type for managing all the user\'s OrderProduct in our application.',
+
+	fields: () => ({
+        slug: {
+            type:  GraphQLString,
+			description: 'Product slug',
+		},
+        title: {
+			type: GraphQLString,
+			description: 'Product title',
+		},
+        price: {
+			type: GraphQLInt,
+			description: 'Product price',
+		},
+        option: {
+			type: GraphQLString,
+			description: 'Product option',
+		},
+        quantity: {
+			type: GraphQLInt,
+			description: 'Product quantity',
+		},
+		product: {
+			type: GraphQLID,
+			description: 'Product ref',
+		}
+
+	})
+
 });

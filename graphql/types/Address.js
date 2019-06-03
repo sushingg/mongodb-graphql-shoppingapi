@@ -1,6 +1,7 @@
 const GraphQL = require('graphql');
 const {
 	GraphQLObjectType,
+	GraphQLInputObjectType,
 	GraphQLString,
     GraphQLBoolean,
 	GraphQLID,
@@ -11,7 +12,7 @@ const {
 const Generic = require('./Generic');
 
 
-const UserType = new GraphQL.GraphQLObjectType({
+const AddressType = new GraphQL.GraphQLObjectType({
 	name: 'Address',
 	description: 'Address type for managing all the user\'s address in our application.',
 
@@ -62,5 +63,6 @@ const UserType = new GraphQL.GraphQLObjectType({
 });
 
 
-module.exports = UserType;
+
+module.exports = AddressType;
 
