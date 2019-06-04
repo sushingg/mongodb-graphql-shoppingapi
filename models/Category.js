@@ -11,20 +11,6 @@ var imageSchema = new mongoose.Schema(
   }
 );
 
-var productSchema = new mongoose.Schema(
-  {
-    slug: { type: String, unique: true },
-    title: String,
-    price: Number,
-    quantity: Number,
-    description: String,
-    descriptionHtml: String,
-    published: Boolean,
-    options: String,
-    image: [imageSchema]
-  },
-  { timestamps: true, toObject: { virtuals: true }, toJSON: { virtuals: true } }
-);
 
 
 var subCategorySchema = new mongoose.Schema(
@@ -71,8 +57,7 @@ subCategorySchema.pre("save", function(next) {
 });
 
 categorySchema.plugin(mongoosePaginate);
-//var Product = mongoose.model("Product", productSchema);
 
 var Category = mongoose.model("Category", categorySchema);
 
-module.exports = Category//,Product;
+module.exports = Category

@@ -265,9 +265,7 @@ class UserController {
         return this.model.findOne({_id: user.id})
             .exec()
             .then((user) => {
-
-               let order = user.addorderress.id(data.id);
-
+               let order = user.order.id(data.id);
                if(!order) throw new Error("Order not found");
 
                delete data.id;
@@ -277,7 +275,15 @@ class UserController {
 
                 return user.save()
                     .then(user => {
-                        return order;
+                        return this.model.findOne({ "order._id": order._id })
+                        .populate({path: 'order.orderProduct.product',model: 'Product'})
+                        .exec()
+                        .then((record) => {
+                            return record.order.id(order._id)
+                        })
+                        .catch((error) => {
+                            return error;
+                        });
                     })
                     .catch((error) => {
                         return error;

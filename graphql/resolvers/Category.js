@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt-nodejs");
 const jwt = require("jsonwebtoken");
 const Category = require("../../models/Category");
+const Product = require("../../models/Product");
 const option = require("../../config/options");
 const moment = require("moment");
 
@@ -14,10 +15,15 @@ class CategoryController {
     return this.model
       .find()
       .populate({path: 'subCategory.product',model: 'Product'})
+      
       .sort("createdAt")
       .exec()
       .then(records => {
-        console.log(records)
+        var query   = {};
+        var options = {
+            page: 1, 
+            limit: 3
+        };
         return records;
       })
       .catch(error => {
@@ -33,7 +39,6 @@ class CategoryController {
       .populate({path: 'subCategory.product',model: 'Product'})
       .exec()
       .then(record => {
-        console.log(record)
         return record;
       })
       .catch(error => {

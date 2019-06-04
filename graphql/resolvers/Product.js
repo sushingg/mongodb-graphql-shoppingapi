@@ -12,12 +12,18 @@ class ProductController {
   }
 
   // this will find all the records in database and return it
-  index() {
+  index(options) {
+    let query = {};
+    if(options.subCategory){query = {subCategory: options.subCategory}}
+    if(options.category){query = {category: options.category}}
+    options.populate = 'Category.subCategory'
+    options.sort = { createdAt: -1 }
+    console.log(options)
     return this.model
-      .find()
-      .sort("createdAt")
-      .exec()
+      .paginate(query, options)
       .then(records => {
+        records['product']=records['docs']
+        delete records['docs']
         return records;
       })
       .catch(error => {
@@ -40,10 +46,10 @@ class ProductController {
 
   // this will insert a new record in database
   create(data) {
-    const product = new Product(data.product);
+    const product = new Product(data);
     console.log(product);
     return Category.findOneAndUpdate(
-      { "subCategory._id": data.subcatId },
+      { "subCategory._id": data.subCategory },
       { $push: { "subCategory.$.product": [{ _id: product._id }] } }
     )
       .exec()
@@ -100,12 +106,12 @@ class ProductController {
         }
         return Category.findOneAndUpdate(
           { "subCategory.product": data.id },
-          { "$pull": { "subCategory.$.product":  data.id  } }
+          { $pull: { "subCategory.$.product": data.id } }
         )
           .exec()
           .then(record => {
-            console.log(record)
-            return {message: "Product deleted successfully!"};
+            console.log(record);
+            return { message: "Product deleted successfully!" };
           })
           .catch(error => {
             return error;
@@ -125,7 +131,7 @@ class ProductController {
         if (!record) {
           return new Error("Invalid request user does't exist.");
         }
-        console.log(record)
+        console.log(record);
         const image = record.image.create(data.image);
         record.image.push(image);
 
@@ -149,11 +155,10 @@ class ProductController {
       .findOne({ "image._id": data.id })
       .exec()
       .then(record => {
-        
         let image = record.image.id(data.id);
 
         if (!image) throw new Error("Image not found");
-        console.log(image)
+        console.log(image);
         delete data.id;
         Object.keys(data.image).map(field => {
           image[field] = data.image[field];

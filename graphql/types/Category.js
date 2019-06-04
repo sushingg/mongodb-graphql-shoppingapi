@@ -8,7 +8,7 @@ const {
     GraphQLList,
 } = GraphQL;
 
-SubCategory = require('./SubCategory');
+const SubCategory = require('./SubCategory');
 
 const CategoryType = new GraphQL.GraphQLObjectType({
 	name: 'Category',

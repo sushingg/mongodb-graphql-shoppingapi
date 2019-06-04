@@ -9,6 +9,7 @@ const {
   GraphQLInt,
   GraphQLList
 } = GraphQL;
+const ProductType = require('./Product')
 
 exports.mobileNumberInputType = new GraphQLInputObjectType({
   name: "mobileNumberInput",
@@ -204,4 +205,26 @@ exports.OrderProductInputType = new GraphQL.GraphQLInputObjectType({
 
 	})
 
+});
+
+exports.productPages = new GraphQLObjectType({
+  name: "ProductPages",
+  description: "Product Pages",
+  fields: () => ({
+    product: {
+			type: new GraphQLList(ProductType)
+		},
+    total: {
+      type: GraphQLInt
+    },
+    limit: {
+      type: GraphQLInt
+    },
+    page: {
+      type: GraphQLInt
+    },
+    pages: {
+      type: GraphQLInt
+    }
+  })
 });

@@ -9,7 +9,7 @@ const {
 } = GraphQL;
 
 const Generic = require('./Generic');
-ProductType = require('./Product')
+const ProductType = require('./Product')
 
 const UserType = new GraphQL.GraphQLObjectType({
 	name: 'OrderProduct',

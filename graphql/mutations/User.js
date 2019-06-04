@@ -334,12 +334,12 @@ module.exports = {
           type: new GraphQLNonNull(GraphQLString),
           description: "Enter id"
         },
-        PaymentId: {
+        paymentId: {
           type: GraphQLString,
           description: "Order payment id"
         },
-        Status: {
-          type: GraphQLInt,
+        status: {
+          type: GraphQLString,
           description: "Order status"
         }
       },

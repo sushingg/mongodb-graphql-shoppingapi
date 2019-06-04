@@ -27,14 +27,18 @@ module.exports = {
       type: ProductType,
       description: "Add new Product",
       args: {
-        subcatId: {
-          type: new GraphQLNonNull(GraphQLString),
-          description: "Sub Category id"
+        slug: {
+          type: GraphQLString,
+          description: "Slug represent of product uri"
         },
-        product: {
-          type: Generic.ProductInputType,
-          description: "Enter product"
-        }
+        title: {
+          type: GraphQLString,
+          description: "Product title"
+        },
+        subCategory: {
+          type: GraphQLID,
+          description: "SubCategory Id"
+        },
       },
       resolve(parent, fields, context, info) {
         if (auth.isAuthenticated(context)) {
@@ -90,7 +94,7 @@ module.exports = {
           return ProductResolver.update(fields);
         }
       }
-    }
+    };
   },
   delete() {
     return {
@@ -149,7 +153,7 @@ module.exports = {
           return ProductResolver.updateImage(fields);
         }
       }
-    }
+    };
   },
   deleteImage() {
     return {
@@ -167,5 +171,5 @@ module.exports = {
         }
       }
     };
-  },
+  }
 };

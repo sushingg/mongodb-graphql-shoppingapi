@@ -6,8 +6,10 @@ const {
 	GraphQLID,
     GraphQLString,
 	GraphQLNonNull,
+	GraphQLInt,
 } = GraphQL;
 
+const Generic = require("../types/Generic");
 // import the user type we created
 const ProductType = require('../types/Product');
 const AddressType = require('../types/Address');
@@ -20,10 +22,28 @@ module.exports = {
 
 	index() {
 		return {
-			type: new GraphQLList(ProductType),
+			type: Generic.productPages,
 			description: 'This will return all the users present in the database',
+			args: {
+				page: {
+					type: GraphQLInt,
+					description: 'query page',
+				},
+				limit: {
+					type: GraphQLInt,
+					description: 'number of item on page',
+				},
+				category: {
+					type: GraphQLString,
+					description: 'Category Slug',
+				},
+				subCategory: {
+					type: GraphQLString,
+					description: 'SubCategory Slug',
+				}
+			},
 			resolve(parent, args, context, info) {
-				return ProductResolver.index({});
+				return ProductResolver.index(args);
 			}
 		}
 	},

@@ -4,6 +4,7 @@ var mongoose = require("mongoose");
 var _ = require("lodash");
 var mongoosePaginate = require("mongoose-paginate");
 
+var slugify = require('slugify')
 var imageSchema = new mongoose.Schema(
   {
     altText: String,
@@ -21,7 +22,10 @@ var productSchema = new mongoose.Schema(
     descriptionHtml: String,
     published: Boolean,
     options: String,
-    image: [imageSchema]
+    image: [imageSchema],
+    category:String,
+    subCategory:String
+
   },
   { timestamps: true, toObject: { virtuals: true }, toJSON: { virtuals: true } }
 );
@@ -40,6 +44,9 @@ productSchema.pre("save", function(next) {
 });
 
 productSchema.plugin(mongoosePaginate);
+mongoosePaginate.paginate.options = { 
+  limit: 20
+};
 
 var Product = mongoose.model("Product", productSchema);
 

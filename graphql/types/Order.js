@@ -30,7 +30,7 @@ const UserType = new GraphQL.GraphQLObjectType({
 			description: 'Order total',
 		},
 		status: {
-			type: GraphQLInt,
+			type: GraphQLString,
 			description: 'Order status',
 		},
         address: {
