@@ -14,9 +14,8 @@ class ProductController {
   // this will find all the records in database and return it
   index(options) {
     let query = {};
-    if(options.subCategory){query = {subCategory: options.subCategory}}
-    if(options.category){query = {category: options.category}}
-    options.populate = 'Category.subCategory'
+    if(options.category){query.category = options.category}
+    if(options.subCategory){query.subCategory = options.subCategory}
     options.sort = { createdAt: -1 }
     console.log(options)
     return this.model
@@ -34,7 +33,7 @@ class ProductController {
   // this will find a single record based on id and return it.
   single(options) {
     return this.model
-      .findOne({ _id: options.id })
+      .findOne(options)
       .exec()
       .then(record => {
         return record;

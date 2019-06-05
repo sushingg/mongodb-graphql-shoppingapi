@@ -20,7 +20,7 @@ const User = require('./models/User');
 
 // let's import the schema file we just created
 const GraphQLSchema = require('./graphql');
-
+const cors = require('cors')
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -35,7 +35,7 @@ dotenv.config()
  * Create Express server.
  */
 const app = express();
-
+app.use(cors())
 /**
  * Connect to MongoDB.
  */
@@ -71,6 +71,14 @@ app.use('/graphql', jwt({
     requestProperty: 'auth',
     credentialsRequired: false,
 }));
+
+app.use(function(err, req, res, next) {
+    if(err.name === 'UnauthorizedError') {
+      res.status(err.status).send({message:err.message});
+      return;
+    }
+ next();
+});
 
 // =========== GraphQL setting  ========== //
 app.use('/graphql', async (req, res, done) => {

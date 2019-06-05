@@ -54,12 +54,20 @@ module.exports = {
 			description: 'This will return data of a single users based on the id provided',
 			args: {
 				id: {
-					type: new GraphQLNonNull(GraphQLID),
+					type: GraphQLID,
 					description: 'Please enter product id',
+				},
+				slug: {
+					type: GraphQLString,
+					description: 'Please enter product slug',
 				}
 			},
 			resolve(parent, args, context, info) {
-				return ProductResolver.single({ id: args.id });
+				if(args.id){
+					args._id = args.id
+					delete args.id
+				}
+				return ProductResolver.single(args);
 			}
 		}
 	}

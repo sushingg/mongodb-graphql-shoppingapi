@@ -5,7 +5,7 @@ const option = require('../../config/options');
 const moment = require('moment');
 const Product = require("../../models/Product");
 const includeAccessToken = (user) => {
-    const payload = {id: user.id, username: user.username};
+    const payload = {id: user.id, username: user.username,exp: Math.floor(Date.now() / 1000) + (60 * 60),};
     let userObject = user.toJSON();
     const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
     userObject['token'] = token;
