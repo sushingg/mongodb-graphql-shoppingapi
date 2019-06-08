@@ -308,7 +308,7 @@ module.exports = {
           description: "Order status"
         },
         address: {
-          type: new GraphQLList(Generic.AddressInputType),
+          type: Generic.AddressInputType,
           description: "Order address"
         },
         orderProduct: {
@@ -324,18 +324,14 @@ module.exports = {
     };
   },
 
-  updateOrder() {
+  /*updateOrder() {
     return {
       type: OrderType,
       description: "Update User's order",
 
-      args: {
-        id: {
-          type: new GraphQLNonNull(GraphQLString),
-          description: "Enter id"
-        },
+      args: {        
         paymentId: {
-          type: GraphQLString,
+          type: new GraphQLNonNull(GraphQLString),
           description: "Order payment id"
         },
         status: {
@@ -344,10 +340,8 @@ module.exports = {
         }
       },
       resolve(parent, fields, context, info) {
-        if (auth.isAuthenticated(context)) {
-          return UserResolver.updateOrder(context.user, fields);
-        }
+        return UserResolver.updateOrder(fields);
       }
     };
-  }
+  }*/
 };

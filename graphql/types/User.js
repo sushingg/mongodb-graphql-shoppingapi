@@ -33,57 +33,42 @@ const UserType = new GraphQL.GraphQLObjectType({
 			type: GraphQLString,
 			description: 'Profile picture of the user',
 		},
-
 		email: {
 			type: GraphQLString,
 			description: 'Email address of the user, must be valid and unique',
 		},
-
         isEmailVerified: {
 			type: GraphQLBoolean,
 			description: 'Email is verified',
 		},
-
         mobileNumber: {
 			type: GraphQLString,
 			description: 'Phone number of the user',
 		},
-
-        isMobileVerified: {
-            type: GraphQLBoolean,
-            description: 'Mobile number is verified',
-        },
-
-		status: {
+		/*status: {
 			type: GraphQLString,
 			description: 'Status of the user, whether active or disabled',
-		},
-
+		},*/
 		type: {
 			type: GraphQLString,
 			description: 'Type of the user, is user, staff or admin',
 		},
-
         dob: {
 			type: GraphQLString,
 			description: 'Date of birth in 1992-01-02',
 		},
-
 		token: {
 			type: GraphQLString,
-			description: 'Status of the user, whether active or disabled',
+			description: 'User token',
 		},
-
 		address: {
 			type: new GraphQLList(Address),
 			description: 'User address',
 		},
-
 		order: {
 			type: new GraphQLList(Order),
 			description: 'User order',
 		},
-
 		createdAt: {
 			type: GraphQLString,
 			description: 'Generate system to allow user to have secure resource access',
@@ -92,7 +77,6 @@ const UserType = new GraphQL.GraphQLObjectType({
 			type: GraphQLString,
 			description: 'Date and time when this users account was last updated',
 		}
-
 	})
 
 });

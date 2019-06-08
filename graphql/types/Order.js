@@ -34,7 +34,7 @@ const UserType = new GraphQL.GraphQLObjectType({
 			description: 'Order status',
 		},
         address: {
-			type: new GraphQLList(Address),
+			type: Address,
 			description: 'Order address',
 		},
 		orderProduct: {

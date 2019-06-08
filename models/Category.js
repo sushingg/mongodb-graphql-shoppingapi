@@ -4,14 +4,6 @@ var mongoose = require("mongoose");
 var _ = require("lodash");
 var mongoosePaginate = require("mongoose-paginate");
 var slugify = require('slugify')
-var imageSchema = new mongoose.Schema(
-  {
-    altText: String,
-    name: String
-  }
-);
-
-
 
 var subCategorySchema = new mongoose.Schema(
   {

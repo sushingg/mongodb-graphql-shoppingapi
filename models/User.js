@@ -33,8 +33,8 @@ var orderSchema = new mongoose.Schema(
   {
     paymentId: String,
     total: Number,
-    ptatus: String,
-    address: [addressSchema],
+    status: String,
+    address: addressSchema,
     orderProduct: [orderProductSchema],
   },
   { timestamps: true }
@@ -50,22 +50,14 @@ var userSchema = new mongoose.Schema(
     passwordResetExpires: Date,
 
     mobileNumber: { type: String, unique: true },
-    mobileVerificationOTP: String,
-    mobileVerificationExpires: Date,
-    isMobileVerified: Boolean,
 
-    deviceTokens: [{ fcm: String, platform: String }],
 
     name: { type: String, default: "" },
     gender: { type: String, default: "" },
     dob: { type: Date },
-    picture: { type: String, default: "" },
-
-    status: { type: String, default: "active" },
     type: { type: String, default: "user" },
 
     address: [addressSchema],
-
     order: [orderSchema]
   },
   { timestamps: true, toObject: { virtuals: true }, toJSON: { virtuals: true } }

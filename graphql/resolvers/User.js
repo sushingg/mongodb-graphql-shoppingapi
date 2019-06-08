@@ -147,12 +147,12 @@ class UserController {
 
         return this.model.findById(user.id)
             .exec()
-            .then((record) => {
-
+            .then((record) => { 
+                
                 if (!record) {
                     return new Error('Invalid request user does\'t exist.');
                 }
-
+                console.log(record)
                 const address = record.address.create(data);
                 record.address.push(address);
 
@@ -260,9 +260,9 @@ class UserController {
 
 
     // this will update existing record in database
-    updateOrder(user, data) {
+    updateOrder(data) {
 
-        return this.model.findOne({_id: user.id})
+        return this.model.findOne({paymentId: data.id})
             .exec()
             .then((user) => {
                let order = user.order.id(data.id);

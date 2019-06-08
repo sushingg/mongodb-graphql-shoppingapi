@@ -12,7 +12,9 @@ const path = require('path');
 const mongoose = require('mongoose');
 const winston = require('winston');
 const moment = require('moment');
-
+const upload = require('./middleware/upload');
+const Resize = require('./middleware/resize');
+const hookMiddleware = require('./middleware/hook');
 const expressGraphQL = require('express-graphql');
 const jwt = require('express-jwt');
 
@@ -58,7 +60,7 @@ app.set('port', process.env.PORT || 4000);
 
 app.use(logger('dev'));
 
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true, parameterLimit: 5000}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(bodyParser.json({limit: '50mb'}));
 
 
@@ -66,7 +68,7 @@ app.use(bodyParser.json({limit: '50mb'}));
  * GraphQL server
  */
 
-app.use('/graphql', jwt({
+app.use('/', jwt({
     secret: process.env.JWT_SECRET_KEY,
     requestProperty: 'auth',
     credentialsRequired: false,
@@ -81,7 +83,7 @@ app.use(function(err, req, res, next) {
 });
 
 // =========== GraphQL setting  ========== //
-app.use('/graphql', async (req, res, done) => {
+app.use('/', async (req, res, done) => {
     var userId = (req.auth && req.auth.id ) ? req.auth.id : undefined;
     const user = ( userId ) ? await User.findById(userId): undefined;
     req.context = {
@@ -91,6 +93,32 @@ app.use('/graphql', async (req, res, done) => {
     done();
 });
 //app.use('/graphql', UploadProfilePicture);
+// =========== upload setting  ========== //
+app.use('/upload', async (req, res, done) => {
+    var userId = (req.auth && req.auth.id ) ? req.auth.id : undefined;
+    const user = ( userId ) ? await User.findById(userId): undefined;
+    req.user = user
+        
+    done();
+});
+app.post('/upload', upload.single('image'), async function (req, res) {
+    if(req.user && req.user.type == 'admin'){
+        const imagePath = path.join(__dirname, '/public/images');
+        console.log(imagePath)
+        const fileUpload = new Resize(imagePath);
+        if (!req.file) {
+        res.status(401).json({error: 'Please provide an image'});
+        }
+        const filename = await fileUpload.save(req.file.buffer);
+        return res.status(200).json({ name: filename });
+    }else{res.status(401).json({error: 'Please provide an user'});}
+    
+  });
+app.post('/hook', function(req, res) {
+    hookMiddleware(req.body)
+    done();
+});
+
 app.use('/graphql', expressGraphQL(req => ({
         schema: GraphQLSchema,
         context: req.context,

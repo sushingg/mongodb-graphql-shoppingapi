@@ -29,7 +29,7 @@ const UserType = new GraphQL.GraphQLObjectType({
 			description: 'Product title',
 		},
         price: {
-			type: GraphQLString,
+			type: GraphQLInt,
 			description: 'Product price',
 		},
         option: {

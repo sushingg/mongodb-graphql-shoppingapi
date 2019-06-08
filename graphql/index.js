@@ -51,7 +51,7 @@ const RootMutation = new GraphQLObjectType({
 		updateUserAddress: UserMutation.updateAddress(),
 		deleteUserAddress: UserMutation.deleteAddress(),
 		addUserOrder:UserMutation.createOrder(),
-		updateUserOrder:UserMutation.updateOrder(),
+		//updateUserOrder:UserMutation.updateOrder(),
 		
 		//Category
 		addCategory:CategoryMutation.create(),
