@@ -27,7 +27,6 @@ async function makeCharge(amount){
     };
     var result = null
     await omise.sources.create(source).then(function(resSource) {
-        console.log(resSource)
       return omise.charges.create({
         'amount':     amount,
         'source':     resSource.id,
@@ -301,7 +300,7 @@ class UserController {
                 if(!order) throw new Error("Order not found");
                 return makeCharge(data.total).then(charge => {
                     console.log(charge.authorize_uri)
-                    order[data.id] = charge.authorize_uri
+                    order[paymentId] = charge.id
 
                     return user.save()
                     .then(user => {
