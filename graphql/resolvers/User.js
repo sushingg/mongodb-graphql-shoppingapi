@@ -298,11 +298,12 @@ class UserController {
             .then((user) => {
                 let order = user.order.id(data.id);
                 if(!order) throw new Error("Order not found");
-                return makeCharge(data.total).then(charge => {
-                    console.log(charge.authorize_uri)
+                //console.log(order)
+                return makeCharge(order.total).then(charge => {
+                    //console.log(charge.authorize_uri)
                     if(!charge.id) throw new Error("Charge not create");
                     order['paymentId'] = charge.id
-
+                    //console.log(user)
                     return user.save()
                     .then(user => {
                          return {message: charge.authorize_uri};

@@ -333,10 +333,6 @@ module.exports = {
         id: {
           type: new GraphQLNonNull(GraphQLID),
           description: "Enter id"
-        },
-        total: {
-          type: new GraphQLNonNull(GraphQLInt),
-          description: "Enter total"
         }
       },
       resolve(parent, fields, context, info) {
