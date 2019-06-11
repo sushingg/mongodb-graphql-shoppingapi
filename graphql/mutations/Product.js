@@ -36,8 +36,12 @@ module.exports = {
           description: "Product title"
         },
         subCategory: {
-          type: GraphQLID,
-          description: "SubCategory Id"
+          type: GraphQLString,
+          description: "SubCategory slug"
+        },
+        category: {
+          type: GraphQLString,
+          description: "Category slug"
         },
       },
       resolve(parent, fields, context, info) {

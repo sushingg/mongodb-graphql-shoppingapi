@@ -48,7 +48,7 @@ class ProductController {
     const product = new Product(data);
     console.log(product);
     return Category.findOneAndUpdate(
-      { "subCategory._id": data.subCategory },
+      { "subCategory.slug": data.subCategory },
       { $push: { "subCategory.$.product": [{ _id: product._id }] } }
     )
       .exec()

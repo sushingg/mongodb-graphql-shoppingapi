@@ -8,7 +8,7 @@ const includeAccessToken = user => {
   const payload = {
     id: user.id,
     username: user.username,
-    exp: Math.floor(Date.now() / 1000) + 60 * 60
+    exp: Math.floor(Date.now() / 1000) + 60 * 120
   };
   let userObject = user.toJSON();
   const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
