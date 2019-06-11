@@ -12,7 +12,36 @@ const includeAccessToken = (user) => {
 
     return userObject;
 };
-
+var omise = require('omise')({
+    'publicKey': process.env.OMISE_PUBLIC_KEY,
+    'secretKey': process.env.OMISE_SECRET_KEY,
+});
+function makeCharge(amount){
+    console.log(process.env.OMISE_PUBLIC_KEY)
+    console.log(process.env.OMISE_SECRET_KEY)
+	amount = amount*100;
+    console.log(amount)
+    var currency = 'thb';
+    var source = {
+        'type':     'internet_banking_bbl',
+        'amount':   amount,
+        'currency': currency,
+    };
+    return omise.sources.create(source).then(function(resSource) {
+      return omise.charges.create({
+        'amount':     amount,
+        'source':     resSource.id,
+        'currency':   currency,
+        'return_uri': 'https://sushingg.herokuapp.com'
+    });
+    }).then(function(charge) {
+        console.log(charge)
+      return charge
+    }).catch(function(err) {
+        console.log(err)
+      return  err
+    });
+}
 class UserController {
 
     constructor(model) {
@@ -263,24 +292,23 @@ class UserController {
     // this will update existing record in database
     updateOrder(data) {
 
-        return this.model.findOne({paymentId: data.id})
+        return this.model.findOne({'order._id': data.id})
+            .populate({path: 'order.orderProduct.product',model: 'Product'})
             .exec()
             .then((user) => {
                let order = user.order.id(data.id);
                if(!order) throw new Error("Order not found");
-
-               delete data.id;
-                Object.keys(data).map(field => {
-                    order[field] = data[field];
-                });
+               var charge =  makeCharge(data.total).then(charge => {return charge})
+               console.log(charge.authorize_uri)
+               order[data.id] = charge.authorize_uri
 
                 return user.save()
                     .then(user => {
-                        return this.model.findOne({ "order._id": order._id })
+                        return this.model.findOne({ "order._id": data.id })
                         .populate({path: 'order.orderProduct.product',model: 'Product'})
                         .exec()
                         .then((record) => {
-                            return record.order.id(order._id)
+                            return record.order.id(order.id)
                         })
                         .catch((error) => {
                             return error;

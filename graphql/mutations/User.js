@@ -324,24 +324,24 @@ module.exports = {
     };
   },
 
-  /*updateOrder() {
+  createPayment() {
     return {
       type: OrderType,
       description: "Update User's order",
 
       args: {        
-        paymentId: {
-          type: new GraphQLNonNull(GraphQLString),
-          description: "Order payment id"
+        id: {
+          type: new GraphQLNonNull(GraphQLID),
+          description: "Enter id"
         },
-        status: {
-          type: GraphQLString,
-          description: "Order status"
+        total: {
+          type: new GraphQLNonNull(GraphQLInt),
+          description: "Enter total"
         }
       },
       resolve(parent, fields, context, info) {
         return UserResolver.updateOrder(fields);
       }
     };
-  }*/
+  }
 };
