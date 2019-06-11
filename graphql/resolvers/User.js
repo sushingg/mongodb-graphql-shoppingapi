@@ -300,7 +300,8 @@ class UserController {
                 if(!order) throw new Error("Order not found");
                 return makeCharge(data.total).then(charge => {
                     console.log(charge.authorize_uri)
-                    order[paymentId] = charge.id
+                    if(!charge.id) throw new Error("Charge not create");
+                    order['paymentId'] = charge.id
 
                     return user.save()
                     .then(user => {
