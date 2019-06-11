@@ -16,7 +16,7 @@ var omise = require('omise')({
     'publicKey': process.env.OMISE_PUBLIC_KEY,
     'secretKey': process.env.OMISE_SECRET_KEY,
 });
-function makeCharge(amount){
+async function makeCharge(amount){
     console.log(process.env.OMISE_PUBLIC_KEY)
     console.log(process.env.OMISE_SECRET_KEY)
 	amount = amount*100;
@@ -28,7 +28,7 @@ function makeCharge(amount){
         'currency': currency,
     };
     var result = null
-    omise.sources.create(source).then(function(resSource) {
+    await omise.sources.create(source).then(function(resSource) {
         console.log(resSource)
       return omise.charges.create({
         'amount':     amount,
@@ -37,12 +37,13 @@ function makeCharge(amount){
         'return_uri': 'https://sushingg.herokuapp.com'
     });
     }).then(function(charge) {
-        result = charge.authorize_uri
+        result = charge
     }).catch(function(err) {
         console.log(err)
         result =  err
     });
     return result
+    
 }
 class UserController {
 
@@ -298,13 +299,13 @@ class UserController {
             .populate({path: 'order.orderProduct.product',model: 'Product'})
             .exec()
             .then((user) => {
-               let order = user.order.id(data.id);
-               if(!order) throw new Error("Order not found");
-               var charge =  makeCharge(data.total)
-               console.log(charge)
-               order[data.id] = charge
+                let order = user.order.id(data.id);
+                if(!order) throw new Error("Order not found");
+                return makeCharge(data.total).then(charge => {
+                    console.log(charge)
+                    order[data.id] = charge.authorize_uri
 
-                return user.save()
+                    return user.save()
                     .then(user => {
                         return this.model.findOne({ "order._id": data.id })
                         .populate({path: 'order.orderProduct.product',model: 'Product'})
@@ -319,6 +320,9 @@ class UserController {
                     .catch((error) => {
                         return error;
                     });
+            
+                });
+               
 
             })
             .catch((error) => {
