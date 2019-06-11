@@ -126,7 +126,7 @@ app.post('/upload', upload.single('image'), async function (req, res) {
     
   });
 app.post('/hook', function(req, res) {
-    hookMiddleware(req.body)
+    hookMiddleware(req.body,res)
     done();
 });
 

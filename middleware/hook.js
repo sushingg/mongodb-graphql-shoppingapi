@@ -1,5 +1,5 @@
 const UserResolver = require('../graphql/resolvers/User') 
-const hook = (data) => {
+const hook = (data,res) => {
 	console.log('recivehook')
 	console.log(data)
 	if(data.data.object === 'charge'){

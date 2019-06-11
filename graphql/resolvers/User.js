@@ -27,7 +27,9 @@ function makeCharge(amount){
         'amount':   amount,
         'currency': currency,
     };
-    return omise.sources.create(source).then(function(resSource) {
+    var result = null
+    omise.sources.create(source).then(function(resSource) {
+        console.log(resSource)
       return omise.charges.create({
         'amount':     amount,
         'source':     resSource.id,
@@ -35,12 +37,12 @@ function makeCharge(amount){
         'return_uri': 'https://sushingg.herokuapp.com'
     });
     }).then(function(charge) {
-        console.log(charge)
-      return charge
+        result = charge.authorize_uri
     }).catch(function(err) {
         console.log(err)
-      return  err
+        result =  err
     });
+    return result
 }
 class UserController {
 
@@ -298,9 +300,9 @@ class UserController {
             .then((user) => {
                let order = user.order.id(data.id);
                if(!order) throw new Error("Order not found");
-               var charge =  makeCharge(data.total).then(charge => {return charge})
-               console.log(charge.authorize_uri)
-               order[data.id] = charge.authorize_uri
+               var charge =  makeCharge(data.total)
+               console.log(charge)
+               order[data.id] = charge
 
                 return user.save()
                     .then(user => {
