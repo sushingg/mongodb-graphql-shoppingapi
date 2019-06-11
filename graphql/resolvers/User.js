@@ -20,7 +20,7 @@ var omise = require("omise")({
   publicKey: process.env.OMISE_PUBLIC_KEY,
   secretKey: process.env.OMISE_SECRET_KEY
 });
-async function makeCharge(amount) {
+async function makeCharge(amount,id) {
   amount = amount * 100;
   console.log(amount);
   var currency = "thb";
@@ -28,6 +28,7 @@ async function makeCharge(amount) {
     type: "internet_banking_bbl",
     amount: amount,
     currency: currency
+    
   };
   var result = null;
   await omise.sources
@@ -37,7 +38,10 @@ async function makeCharge(amount) {
         amount: amount,
         source: resSource.id,
         currency: currency,
-        return_uri: "https://sushingg.herokuapp.com"
+        return_uri: "https://sushingg.herokuapp.com",
+        metadata:{
+            "order_id": id
+          }
       });
     })
     .then(function(charge) {
@@ -316,7 +320,7 @@ class UserController {
         let order = user.order.id(data.id);
         if (!order) throw new Error("Order not found");
         //console.log(order)
-        return makeCharge(order.total).then(charge => {
+        return makeCharge(order.total,data.id).then(charge => {
           //console.log(charge.authorize_uri)
           if (!charge.id) throw new Error("Charge not create");
           order["paymentId"] = charge.id;
@@ -339,29 +343,17 @@ class UserController {
   updateCharge(data,res) {
       console.log('got in updatecharge resover')
     return this.model
-      .findOne({ "order.paymentId": data.paymentId })
-      .populate({ path: "order.orderProduct.product", model: "Product" })
+      .findOneAndUpdate({ 'order.paymentId': data.paymentId }, 
+      { "order.$.status" :  data.status },
+      {safe: true, new: true})
       .exec()
       .then(user => {
-        let order = user.order.id(data.id);
-        if (!order) res.status(401).json({error: 'Order not found'});
-        if (!data.status) res.status(401).json({error: 'Status not found'});
-        console.log(data)
-        order["status"] = data.status;
-        //console.log(user)
-        return user
-        .save()
-        .then(user => {
-            console.log(user)
-            res.status(200).send('ok');
-            return { message: successful };
-        })
-        .catch(error => {
-            res.status(401).json({error: error});
-            console.log(error)
-            return error;
-        });
-
+        console.log(user)
+        if(!user){
+            res.status(401).json({error: 'no user'});
+        }else{
+            res.status(200).send('ok')
+        }
       })
       .catch(error => {
         res.status(401).json({error: error});
