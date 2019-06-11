@@ -307,7 +307,7 @@ class UserController {
   }
 
   // this will update existing record in database
-  supdateOrder(data) {
+  updateOrder(data) {
     return this.model
       .findOne({ "order._id": data.id })
       .populate({ path: "order.orderProduct.product", model: "Product" })
@@ -336,7 +336,7 @@ class UserController {
       });
   }
 
-  updateOrder(data) {
+  updateCharge(data) {
     return this.model
       .findOne({ "order.paymentId": data.paymentId })
       .populate({ path: "order.orderProduct.product", model: "Product" })
@@ -345,7 +345,7 @@ class UserController {
         let order = user.order.id(data.id);
         if (!order) throw new Error("Order not found");
         if (!data.status) throw new Error("data.status not found");
-        //console.log(order)
+        console.log(data)
         order["status"] = data.status;
         //console.log(user)
         return user
