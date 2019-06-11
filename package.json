@@ -1,9 +1,13 @@
 {
   "name": "NodeMongoDbQraphQL",
   "version": "0.0.1",
-  "scripts": {
+  "scripts": { 
     "start": "node app.js",
     "dev": "nodemon app.js"
+  },
+  "engines": {
+    "node": "11.3.x",
+    "yarn":"1.13.x"
   },
   "dependencies": {
     "aws-sdk": "^2.457.0",
