@@ -336,15 +336,16 @@ class UserController {
       });
   }
 
-  updateCharge(data) {
+  updateCharge(data,res) {
+      console.log('got in updatecharge resover')
     return this.model
       .findOne({ "order.paymentId": data.paymentId })
       .populate({ path: "order.orderProduct.product", model: "Product" })
       .exec()
       .then(user => {
         let order = user.order.id(data.id);
-        if (!order) throw new Error("Order not found");
-        if (!data.status) throw new Error("data.status not found");
+        if (!order) res.status(401).json({error: 'Order not found'});
+        if (!data.status) res.status(401).json({error: 'Status not found'});
         console.log(data)
         order["status"] = data.status;
         //console.log(user)
@@ -355,11 +356,13 @@ class UserController {
             return { message: successful };
         })
         .catch(error => {
+            res.status(401).json({error: error});
             return error;
         });
 
       })
       .catch(error => {
+        res.status(401).json({error: error});
         return error;
       });
   }
