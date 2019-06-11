@@ -18,6 +18,7 @@ const hookMiddleware = require('./middleware/hook');
 const expressGraphQL = require('express-graphql');
 const jwt = require('express-jwt');
 
+const updateproduct = require("./middleware/updateproduct");
 const User = require('./models/User');
 
 // let's import the schema file we just created
@@ -101,17 +102,27 @@ app.use('/upload', async (req, res, done) => {
         
     done();
 });
+app.use(express.static(__dirname + '/public'));
 app.post('/upload', upload.single('image'), async function (req, res) {
-    if(req.user && req.user.type == 'admin'){
+    
+        if(req.user && req.user.type == 'admin'){
+        let product = req.body.product
+        console.log(req.body.product)
         const imagePath = path.join(__dirname, '/public/images');
         console.log(imagePath)
-        const fileUpload = new Resize(imagePath);
+        const fileUpload = new Resize(imagePath); 
+        if (!product) {
+            res.status(401).json({error: 'Please provide an Product'});
+            }
         if (!req.file) {
-        res.status(401).json({error: 'Please provide an image'});
+            res.status(401).json({error: 'Please provide an image'});
         }
         const filename = await fileUpload.save(req.file.buffer);
+        updateproduct(filename,product)
         return res.status(200).json({ name: filename });
     }else{res.status(401).json({error: 'Please provide an user'});}
+    
+    
     
   });
 app.post('/hook', function(req, res) {

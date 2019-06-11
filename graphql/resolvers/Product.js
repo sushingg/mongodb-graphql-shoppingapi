@@ -73,21 +73,21 @@ class ProductController {
   // this will update existing record in database
   update(data) {
     return this.model
-      .findOne({ _id: data.id })
+      .findByIdAndUpdate(data.id,  data )
       .exec()
       .then(record => {
-        delete data.id;
+        /*delete data.id;
         Object.keys(data).map(field => {
           record[field] = data[field];
-        });
+        });*/
         return record
-          .save()
+          /*.save()
           .then(user => {
             return user;
           })
           .catch(error => {
             return error;
-          });
+          });*/
       })
       .catch(error => {
         return error;
@@ -130,13 +130,13 @@ class ProductController {
         if (!record) {
           return new Error("Invalid request user does't exist.");
         }
-        console.log(record);
         const image = record.image.create(data.image);
         record.image.push(image);
 
         return record
           .save()
           .then(updated => {
+            console.log('saved')
             return updated;
           })
           .catch(error => {

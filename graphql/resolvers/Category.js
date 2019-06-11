@@ -92,24 +92,19 @@ class CategoryController {
    // this will insert a new record in database
    createSubCategory(data) {
     return this.model
-      .findById(data.id)
-      .exec()
+      .findByIdAndUpdate(
+        data.id,
+        {$push: {"subCategory": {slug: data.slug, title: data.title}}},
+        {safe: true, upsert: true, new: true}
+        ).exec()
       .then(record => {
         if (!record) {
           return new Error("Invalid request model does't exist.");
         }
-        delete data.id
-        const sub = record.subCategory.create(data);
-        record.subCategory.push(sub);
+        
 
         return record
-          .save()
-          .then(updated => {
-            return updated;
-          })
-          .catch(error => {
-            return error;
-          });
+          
       })
       .catch(error => {
         return error;
@@ -149,18 +144,15 @@ class CategoryController {
   // this will delete the user subcategory
   deleteSubCategory( data) {
     return this.model
-      .findOne({ 'subCategory._id': data.id })
-      .exec()
+      .findOneAndUpdate(
+        {'subCategory._id':data.id},
+        {$pull: {"subCategory": {_id:data.id}}},
+        {safe: true, upsert: true, new: true}
+        ).exec()
       .then(record => {
-        record.subCategory.pull(data.id);
+        
         return record
-          .save()
-          .then(record => {
-            return { message: "deleted successfully!" };
-          })
-          .catch(error => {
-            return error;
-          });
+          
       })
       .catch(error => {
         return error;

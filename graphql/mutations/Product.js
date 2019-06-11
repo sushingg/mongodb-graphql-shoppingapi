@@ -10,7 +10,7 @@ const {
   GraphQLString,
   GraphQLInt,
   GraphQLID,
-  GraphQLList
+  GraphQLBoolean
 } = GraphQL;
 
 // import the user type we created
@@ -81,7 +81,7 @@ module.exports = {
           description: "Product option"
         },
         published: {
-          type: GraphQLString,
+          type: GraphQLBoolean,
           description: "Product option"
         },
         options: {
@@ -102,7 +102,7 @@ module.exports = {
       description: "Delete Product",
       args: {
         id: {
-          type: new GraphQLNonNull(GraphQLString),
+          type: new GraphQLNonNull(GraphQLID),
           description: "Id of Product to delete"
         }
       },

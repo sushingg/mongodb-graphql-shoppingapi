@@ -46,7 +46,7 @@ const ProductType = new GraphQL.GraphQLObjectType({
       description: "Product option"
     },
     published: {
-      type: GraphQLString,
+      type: GraphQLBoolean,
       description: "Product option"
     },
     options: {

@@ -77,7 +77,7 @@ module.exports = {
       description: "Delete Category",
       args: {
         id: {
-          type: new GraphQLNonNull(GraphQLString),
+          type: new GraphQLNonNull(GraphQLID),
           description: "Id of Product to delete"
         }
       },
@@ -94,7 +94,7 @@ module.exports = {
       description: "Add new Image",
       args: {
         id: {
-          type: new GraphQLNonNull(GraphQLString),
+          type: new GraphQLNonNull(GraphQLID),
           description: "Category id"
         },
         slug: {
@@ -144,7 +144,7 @@ module.exports = {
       description: "Delete Subcategory",
       args: {
         id: {
-          type: new GraphQLNonNull(GraphQLString),
+          type: new GraphQLNonNull(GraphQLID),
           description: "Id of Subcategory to delete"
         }
       },

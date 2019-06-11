@@ -54,6 +54,7 @@ class UserController {
     // this will find a single record based on id and return it.
     single(options) {
         return this.model.findOne({_id: options.id})
+            .populate({path: 'order.orderProduct.product',model: 'Product'})
             .exec()
             .then(record => {
                 return record;

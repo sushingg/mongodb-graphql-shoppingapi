@@ -11,7 +11,7 @@ const {
 // import the user type we created
 const UserType = require('../types/User');
 const AddressType = require('../types/Address');
-
+const OrderType = require('../types/Order')
 // import the user resolver we created
 const UserResolver = require('../resolvers/User');
 
@@ -51,6 +51,24 @@ module.exports = {
 			resolve(parent, args, context, info){				
                 if (auth.isAuthenticated(context)) {
                     return context.user;
+                }
+            }
+		}
+	},
+
+	userOrder() {
+		return {
+			type: OrderType,
+			description: 'This will return current user profile details',
+            args: {
+                id: {
+                    type: new GraphQLNonNull(GraphQLID),
+                    description: 'Please enter address id',
+                }
+            },
+			resolve(parent, args, context, info){
+                if (auth.isAuthenticated(context)) {
+                	return context.user.order.id(args.id);
                 }
             }
 		}
