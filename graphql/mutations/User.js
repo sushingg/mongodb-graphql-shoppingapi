@@ -326,7 +326,7 @@ module.exports = {
 
   createPayment() {
     return {
-      type: OrderType,
+      type: Generic.messageOutputType,
       description: "Update User's order",
 
       args: {        

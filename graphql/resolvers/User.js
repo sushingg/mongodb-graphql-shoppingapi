@@ -17,8 +17,6 @@ var omise = require('omise')({
     'secretKey': process.env.OMISE_SECRET_KEY,
 });
 async function makeCharge(amount){
-    console.log(process.env.OMISE_PUBLIC_KEY)
-    console.log(process.env.OMISE_SECRET_KEY)
 	amount = amount*100;
     console.log(amount)
     var currency = 'thb';
@@ -302,20 +300,12 @@ class UserController {
                 let order = user.order.id(data.id);
                 if(!order) throw new Error("Order not found");
                 return makeCharge(data.total).then(charge => {
-                    console.log(charge)
+                    console.log(charge.authorize_uri)
                     order[data.id] = charge.authorize_uri
 
                     return user.save()
                     .then(user => {
-                        return this.model.findOne({ "order._id": data.id })
-                        .populate({path: 'order.orderProduct.product',model: 'Product'})
-                        .exec()
-                        .then((record) => {
-                            return record.order.id(order.id)
-                        })
-                        .catch((error) => {
-                            return error;
-                        });
+                         return {message: charge.authorize_uri};
                     })
                     .catch((error) => {
                         return error;
