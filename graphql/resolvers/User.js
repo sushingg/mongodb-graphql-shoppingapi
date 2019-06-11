@@ -307,7 +307,7 @@ class UserController {
   }
 
   // this will update existing record in database
-  updateOrder(data) {
+  supdateOrder(data) {
     return this.model
       .findOne({ "order._id": data.id })
       .populate({ path: "order.orderProduct.product", model: "Product" })
@@ -336,7 +336,7 @@ class UserController {
       });
   }
 
-  updateCharge(data) {
+  updateOrder(data) {
     return this.model
       .findOne({ "order.paymentId": data.paymentId })
       .populate({ path: "order.orderProduct.product", model: "Product" })
@@ -351,6 +351,7 @@ class UserController {
         return user
         .save()
         .then(user => {
+            console.log(user)
             return { message: successful };
         })
         .catch(error => {
