@@ -358,12 +358,14 @@ class UserController {
         })
         .catch(error => {
             res.status(401).json({error: error});
+            console.log(error)
             return error;
         });
 
       })
       .catch(error => {
         res.status(401).json({error: error});
+        console.log(error)
         return error;
       });
   }
