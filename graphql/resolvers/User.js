@@ -353,6 +353,7 @@ class UserController {
         .save()
         .then(user => {
             console.log(user)
+            res.status(200).send('ok');
             return { message: successful };
         })
         .catch(error => {
