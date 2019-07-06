@@ -7,7 +7,8 @@ const Product = require("../../models/Product");
 const includeAccessToken = user => {
   const payload = {
     id: user.id,
-    username: user.username,
+    username: user.name,
+    type: user.type,
     exp: Math.floor(Date.now() / 1000) + 60 * 120
   };
   let userObject = user.toJSON();
@@ -105,7 +106,7 @@ class UserController {
       .catch(error => {
         return error;
       });
-  }
+  } 
 
   // this will insert a new record in database
   create(data) {
