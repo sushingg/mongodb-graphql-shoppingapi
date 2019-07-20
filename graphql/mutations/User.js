@@ -98,6 +98,10 @@ module.exports = {
       type: UserType,
       description: "Update user details",
       args: {
+        oldPassword: {
+          type: new GraphQLNonNull(GraphQLString),
+          description: "Enter your old password"
+        },
         name: {
           type: GraphQLString,
           description: "Enter full name, Cannot be left empty"
@@ -229,7 +233,7 @@ module.exports = {
 
       args: {
         id: {
-          type: new GraphQLNonNull(GraphQLString),
+          type: new GraphQLNonNull(GraphQLID),
           description: "Enter id"
         },
         firstName: {
@@ -276,7 +280,7 @@ module.exports = {
 
       args: {
         id: {
-          type: new GraphQLNonNull(GraphQLString),
+          type: new GraphQLNonNull(GraphQLID),
           description: "Enter id"
         }
       },

@@ -19,7 +19,7 @@ const includeAccessToken = user => {
   return userObject;
 };
 var omise = require("omise")({
-  publicKey: process.env.OMISE_PUBLIC_KEY,
+  publicKey: process.env.OMISE_PUBLIC_KEY, 
   secretKey: process.env.OMISE_SECRET_KEY
 });
 async function makeCharge(amount, id) {
@@ -144,12 +144,20 @@ class UserController {
       .findOne({ _id: user.id })
       .exec()
       .then(record => {
+        console.log(data)
+        if (bcrypt.compareSync(data.oldPassword, user.password)) {
+        }else{
+          return new Error("Invalid login credentials.");
+        }
+
         let mobileNumberModified = false;
+
+        if (data.password == "") data.password = data.oldPassword
+        delete data.oldPassword
         Object.keys(data).map(field => {
           if (field == "mobileNumber" && data[field] != user.mobileNumber) {
             mobileNumberModified = true;
           }
-
           if (
             field == "picture" &&
             (!data[field] || data[field] == "" || data[field] == null)
@@ -158,7 +166,7 @@ class UserController {
           }
           record[field] = data[field];
         });
-
+        
         return record
           .save()
           .then(user => {
