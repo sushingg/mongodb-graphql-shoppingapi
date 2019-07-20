@@ -65,7 +65,7 @@ module.exports = {
         }
       },
       resolve(parent, fields, context, info) {
-        if (auth.isAuthenticated(context)) {
+        if (auth.isSuper(context)) {
           return CategoryResolver.update(fields);
         }
       }
@@ -82,7 +82,7 @@ module.exports = {
         }
       },
       resolve(parent, fields, context, info) {
-        if (auth.isAuthenticated(context)) {
+        if (auth.isSuper(context)) {
           return CategoryResolver.delete(fields);
         }
       }
@@ -107,7 +107,7 @@ module.exports = {
         }
       },
       resolve(parent, fields, context, info) {
-        if (auth.isAuthenticated(context)) {
+        if (auth.isSuper(context)) {
           return CategoryResolver.createSubCategory(fields)
         }
       }
@@ -132,7 +132,7 @@ module.exports = {
         }
       },
       resolve(parent, fields, context, info) {
-        if (auth.isAuthenticated(context)) {
+        if (auth.isSuper(context)) {
           return CategoryResolver.updateSubCategory(fields);
         }
       }
@@ -149,7 +149,7 @@ module.exports = {
         }
       },
       resolve(parent, fields, context, info) {
-        if (auth.isAuthenticated(context)) {
+        if (auth.isSuper(context)) {
           return CategoryResolver.deleteSubCategory(fields);
         }
       }

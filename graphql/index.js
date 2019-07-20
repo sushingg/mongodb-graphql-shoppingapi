@@ -15,6 +15,7 @@ const ProductQuery = require('./queries/Product');
 const UserMutation = require('./mutations/User');
 const CategoryMutation = require('./mutations/Category')
 const ProductMutation = require('./mutations/Product')
+const SiteMutation = require('./mutations/Site')
 // lets define our root query
 const RootQuery = new GraphQLObjectType({
 	name: 'RootQueryType',
@@ -33,7 +34,8 @@ const RootQuery = new GraphQLObjectType({
 		category:CategoryQuery.single(),
 		//Product
 		products:ProductQuery.index(),
-		product:ProductQuery.single()
+		product:ProductQuery.single(),
+		productSearch:ProductQuery.search()
 	},
 });
 
@@ -69,6 +71,12 @@ const RootMutation = new GraphQLObjectType({
 		addProductImage:ProductMutation.createImage(),
 		updateProductImage:ProductMutation.updateImage(),
 		deleteProductImage:ProductMutation.deleteImage(),
+		//Site
+		updateSite:SiteMutation.update(),
+		addSiteImage:SiteMutation.createImage(),
+		updateSiteImage:SiteMutation.updateImage(),
+		deleteSiteImage:SiteMutation.deleteImage(),
+
 	},
 });
 

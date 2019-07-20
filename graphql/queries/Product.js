@@ -70,6 +70,21 @@ module.exports = {
 				return ProductResolver.single(args);
 			}
 		}
+	},
+	search() {
+		return {
+			type: new GraphQLList(ProductType),
+			description: 'This will return data of a single users based on the id provided',
+			args: {
+				keyword: {
+					type: GraphQLString,
+					description: 'Please enter keyword',
+				}
+			},
+			resolve(parent, args, context, info) {
+				return ProductResolver.search(args);
+			}
+		}
 	}
 
 

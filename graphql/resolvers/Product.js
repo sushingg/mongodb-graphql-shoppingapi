@@ -29,7 +29,20 @@ class ProductController {
         return error;
       });
   }
-
+  search(options) {
+    
+    let keyword = new RegExp(options.keyword);
+    console.log(options)
+    return this.model
+      .find({title: { $regex: keyword , $options: 'i' } })
+      .then(records => {
+        console.log(records)
+        return records;
+      })
+      .catch(error => {
+        return error;
+      });
+  }
   // this will find a single record based on id and return it.
   single(options) {
     return this.model

@@ -4,6 +4,7 @@ const User = require("../../models/User");
 const option = require("../../config/options");
 const moment = require("moment");
 const Product = require("../../models/Product");
+const _ = require("lodash");
 const includeAccessToken = user => {
   const payload = {
     id: user.id,
@@ -21,7 +22,7 @@ var omise = require("omise")({
   publicKey: process.env.OMISE_PUBLIC_KEY,
   secretKey: process.env.OMISE_SECRET_KEY
 });
-async function makeCharge(amount,id) {
+async function makeCharge(amount, id) {
   amount = amount * 100;
   console.log(amount);
   var currency = "thb";
@@ -29,7 +30,6 @@ async function makeCharge(amount,id) {
     type: "internet_banking_bbl",
     amount: amount,
     currency: currency
-    
   };
   var result = null;
   await omise.sources
@@ -40,9 +40,9 @@ async function makeCharge(amount,id) {
         source: resSource.id,
         currency: currency,
         return_uri: "https://sushingg.herokuapp.com",
-        metadata:{
-            "order_id": id
-          }
+        metadata: {
+          order_id: id
+        }
       });
     })
     .then(function(charge) {
@@ -106,7 +106,7 @@ class UserController {
       .catch(error => {
         return error;
       });
-  } 
+  }
 
   // this will insert a new record in database
   create(data) {
@@ -282,21 +282,50 @@ class UserController {
         if (!record) {
           return new Error("Invalid request user does't exist.");
         }
-        const order = record.order.create(data);
-        record.order.push(order);
-
-        return record
-          .save()
-          .then(updated => {
-            return this.model
-              .findOne({ "order._id": order._id })
-              .populate({
-                path: "order.orderProduct.product",
-                model: "Product"
-              })
-              .exec()
-              .then(record => {
-                return record.order.id(order._id);
+        let productSlug = _.map(data.orderProduct, object =>
+          _.omit(object, ["quantity"])
+        );
+        return Product.find({ $or: productSlug })
+          .exec()
+          .then(pd => {
+            data.total = 0;
+            _.forEach(data.orderProduct, function(value, key) {
+              let thisp = _.find(pd, { slug: value.slug });
+              data.total += value.quantity * thisp.price;
+              data.orderProduct[key].title = thisp.title;
+              data.orderProduct[key].price = thisp.price;
+            });
+            const order = record.order.create(data);
+            record.order.push(order);
+            return record
+              .save()
+              .then(updated => {
+                return this.model
+                  .findOne({ "order._id": order._id })
+                  .populate({
+                    path: "order.orderProduct.product",
+                    model: "Product"
+                  })
+                  .exec()
+                  .then(record => {
+                    _.forEach(data.orderProduct, function(value) {
+                      Product.updateOne(
+                        { slug: value.slug },
+                        { $inc: { quantity: -value.quantity } }
+                      )
+                        .exec()
+                        .then(res => {
+                          return res;
+                        })
+                        .catch(error => {
+                          return error;
+                        });
+                    });
+                    return record.order.id(order._id);
+                  })
+                  .catch(error => {
+                    return error;
+                  });
               })
               .catch(error => {
                 return error;
@@ -321,7 +350,7 @@ class UserController {
         let order = user.order.id(data.id);
         if (!order) throw new Error("Order not found");
         //console.log(order)
-        return makeCharge(order.total,data.id).then(charge => {
+        return makeCharge(order.total, data.id).then(charge => {
           //console.log(charge.authorize_uri)
           if (!charge.id) throw new Error("Charge not create");
           order["paymentId"] = charge.id;
@@ -341,24 +370,26 @@ class UserController {
       });
   }
 
-  updateCharge(data,res) {
-      console.log('got in updatecharge resover')
+  updateCharge(data, res) {
+    console.log("got in updatecharge resover");
     return this.model
-      .findOneAndUpdate({ 'order.paymentId': data.paymentId }, 
-      { "order.$.status" :  data.status },
-      {safe: true, new: true})
+      .findOneAndUpdate(
+        { "order.paymentId": data.paymentId },
+        { "order.$.status": data.status },
+        { safe: true, new: true }
+      )
       .exec()
       .then(user => {
-        console.log(user)
-        if(!user){
-            res.status(401).json({error: 'no user'});
-        }else{
-            res.status(200).send('ok')
+        console.log(user);
+        if (!user) {
+          res.status(401).json({ error: "no user" });
+        } else {
+          res.status(200).send("ok");
         }
       })
       .catch(error => {
-        res.status(401).json({error: error});
-        console.log(error)
+        res.status(401).json({ error: error });
+        console.log(error);
         return error;
       });
   }

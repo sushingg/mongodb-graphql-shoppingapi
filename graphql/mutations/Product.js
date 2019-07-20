@@ -45,7 +45,7 @@ module.exports = {
         },
       },
       resolve(parent, fields, context, info) {
-        if (auth.isAuthenticated(context)) {
+        if (auth.isSuper(context)) {
           return ProductResolver.create(fields);
         }
       }
@@ -94,7 +94,7 @@ module.exports = {
         }
       },
       resolve(parent, fields, context, info) {
-        if (auth.isAuthenticated(context)) {
+        if (auth.isSuper(context)) {
           return ProductResolver.update(fields);
         }
       }
@@ -111,7 +111,7 @@ module.exports = {
         }
       },
       resolve(parent, fields, context, info) {
-        if (auth.isAuthenticated(context)) {
+        if (auth.isSuper(context)) {
           return ProductResolver.delete(fields);
         }
       }
@@ -132,7 +132,7 @@ module.exports = {
         }
       },
       resolve(parent, fields, context, info) {
-        if (auth.isAuthenticated(context)) {
+        if (auth.isSuper(context)) {
           return ProductResolver.createImage(fields);
         }
       }
@@ -153,7 +153,7 @@ module.exports = {
         }
       },
       resolve(parent, fields, context, info) {
-        if (auth.isAuthenticated(context)) {
+        if (auth.isSuper(context)) {
           return ProductResolver.updateImage(fields);
         }
       }
@@ -170,7 +170,7 @@ module.exports = {
         }
       },
       resolve(parent, fields, context, info) {
-        if (auth.isAuthenticated(context)) {
+        if (auth.isSuper(context)) {
           return ProductResolver.deleteImage(fields);
         }
       }

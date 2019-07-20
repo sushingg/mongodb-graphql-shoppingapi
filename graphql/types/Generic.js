@@ -37,9 +37,13 @@ exports.initOutputType = new GraphQLObjectType({
   name: "initOutput",
   description: "Init response structure",
   fields: () => ({
-    appVersion: {
+    title: {
       type: GraphQLString,
-      description: "Return app version"
+      description: "Site title"
+    },
+    image: {
+      type: new GraphQLList(this.Image),
+      description: "Product option"
     }
   })
 });
@@ -182,25 +186,9 @@ exports.OrderProductInputType = new GraphQL.GraphQLInputObjectType({
             type:  GraphQLString,
 			description: 'Product slug',
 		},
-        title: {
-			type: GraphQLString,
-			description: 'Product title',
-		},
-        price: {
-			type: GraphQLInt,
-			description: 'Product price',
-		},
-        option: {
-			type: GraphQLString,
-			description: 'Product option',
-		},
         quantity: {
 			type: GraphQLInt,
 			description: 'Product quantity',
-		},
-		product: {
-			type: GraphQLID,
-			description: 'Product ref',
 		}
 
 	})
