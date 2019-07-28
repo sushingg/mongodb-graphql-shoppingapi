@@ -107,6 +107,42 @@ class UserController {
         return error;
       });
   }
+  usersOrder(data) {
+    return this.model
+      .find({ })
+      .populate({ path: "order.orderProduct.product", model: "Product" })
+      .exec()
+      .then(record => {
+        let newRecord = _.forEach(record, function(value) {
+          let order = _.filter(value.order, function(item){
+            return item.status === data.status;
+          })
+          value.order = order
+        });
+        console.log(newRecord)
+        return record;
+      })
+      .catch(error => {
+        return error;
+      });
+  }
+
+  myOrder(user, data) {
+    return this.model
+      .findOne({ _id: user.id })
+      .populate({ path: "order.orderProduct.product", model: "Product" })
+      .exec()
+      .then(record => {
+        console.log(data)
+        let order = _.filter(record.order, function(item){
+          return item.status === data.status;
+        })
+        return order;
+      })
+      .catch(error => {
+        return error;
+      });
+  }
 
   // this will insert a new record in database
   create(data) {

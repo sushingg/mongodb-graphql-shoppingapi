@@ -33,7 +33,7 @@ var orderSchema = new mongoose.Schema(
   {
     paymentId: String,
     total: Number,
-    status: String,
+    status: { type: String, default: "" },
     address: addressSchema,
     orderProduct: [orderProductSchema],
   },
@@ -86,7 +86,9 @@ userSchema.pre("save", function(next) {
 });
 
 userSchema.plugin(mongoosePaginate);
-
+mongoosePaginate.paginate.options = { 
+  limit: 20
+};
 var User = mongoose.model("User", userSchema);
 
 module.exports = User;

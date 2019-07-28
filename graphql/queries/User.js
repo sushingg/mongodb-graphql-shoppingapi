@@ -6,6 +6,7 @@ const {
 	GraphQLID,
     GraphQLString,
 	GraphQLNonNull,
+	GraphQLInt
 } = GraphQL;
 
 // import the user type we created
@@ -15,6 +16,8 @@ const OrderType = require('../types/Order')
 // import the user resolver we created
 const UserResolver = require('../resolvers/User');
 
+
+const Generic = require("../types/Generic");
 
 module.exports = {
 
@@ -27,7 +30,21 @@ module.exports = {
 			}
 		}
 	},
-
+	usersOrder() {
+		return {
+			type: new GraphQLList(UserType),
+			description: 'This will return data of a single users based on the id provided',
+			args: {
+				status: {
+					type: GraphQLString,
+					description: 'status of order',
+				}
+			},
+			resolve(parent, args, context, info) {
+				return UserResolver.usersOrder(args);
+			}
+		}
+	},
 	single() {
 		return {
 			type: UserType,
@@ -71,6 +88,21 @@ module.exports = {
                 	return context.user.order.id(args.id);
                 }
             }
+		}
+	},
+	myOrder() {
+		return {
+			type: new GraphQLList(OrderType),
+			description: 'This will return all the users present in the database',
+			args: {
+				status: {
+					type: GraphQLString,
+					description: 'status of order in /n successful /n failed /n ',
+				}
+			},
+			resolve(parent, args, context, info) {
+				return UserResolver.myOrder(context.user, args);
+			}
 		}
 	},
 

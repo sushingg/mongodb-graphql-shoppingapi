@@ -7,6 +7,7 @@ const {
     GraphQLString,
 	GraphQLNonNull,
 	GraphQLInt,
+	GraphQLBoolean
 } = GraphQL;
 
 const Generic = require("../types/Generic");
@@ -40,6 +41,10 @@ module.exports = {
 				subCategory: {
 					type: GraphQLString,
 					description: 'SubCategory Slug',
+				},
+				incDraft: {
+					type: GraphQLBoolean,
+					description: 'include draft',
 				}
 			},
 			resolve(parent, args, context, info) {

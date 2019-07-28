@@ -16,6 +16,7 @@ class ProductController {
     let query = {};
     if(options.category){query.category = options.category}
     if(options.subCategory){query.subCategory = options.subCategory}
+    if(options.incDraft != true ){query.published = true}
     options.sort = { createdAt: -1 }
     console.log(options)
     return this.model

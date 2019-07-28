@@ -29,6 +29,8 @@ const RootQuery = new GraphQLObjectType({
 		me: UserQuery.me(),
 		userAddress: UserQuery.userAddress(),
 		userOrder: UserQuery.userOrder(),
+		usersOrder: UserQuery.usersOrder(),
+		myOrder: UserQuery.myOrder(),
 		//Category
 		categories:CategoryQuery.index(),
 		category:CategoryQuery.single(),
