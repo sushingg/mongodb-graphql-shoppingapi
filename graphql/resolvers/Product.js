@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt-nodejs");
 const jwt = require("jsonwebtoken");
+const _ = require("lodash")
 const Product = require("../../models/Product");
 const option = require("../../config/options");
 const moment = require("moment");
@@ -194,22 +195,19 @@ class ProductController {
   // this will delete the user image
   deleteImage(data) {
     return this.model
-      .findOne({ "image._id": data.id })
-      .exec()
-      .then(record => {
-        record.image.pull(data.id);
-        return record
-          .save()
-          .then(record => {
-            return { message: "Image deleted successfully!" };
-          })
-          .catch(error => {
-            return error;
-          });
-      })
-      .catch(error => {
-        return error;
-      });
+    .findOneAndUpdate(
+      {'image._id':data.id},
+      {$pull: {"image": {_id:data.id}}},
+      {safe: true, upsert: true, new: true}
+      ).exec()
+    .then(record => {
+      
+      return { message: "Image deleted successfully!" };
+        
+    })
+    .catch(error => {
+      return error;
+    });
   }
 }
 const product_controller = new ProductController();

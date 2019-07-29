@@ -165,7 +165,7 @@ module.exports = {
       description: "Delete Image",
       args: {
         id: {
-          type: new GraphQLNonNull(GraphQLString),
+          type: new GraphQLNonNull(GraphQLID),
           description: "Id of Image to delete"
         }
       },
