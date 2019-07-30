@@ -107,7 +107,6 @@ app.post('/upload', upload.single('image'), async function (req, res) {
     
         if(req.user && req.user.type == 'admin'){
         let product = req.body.product
-        console.log(req.body.product)
         const imagePath = path.join(__dirname, '/public/images');
         console.log(imagePath)
         const fileUpload = new Resize(imagePath); 

@@ -11,7 +11,7 @@ class InitController {
       .findOne({})
       .exec()
       .then(records => {
-          console.log(records)
+          //console.log(records)
         return records;
       })
       .catch(error => {

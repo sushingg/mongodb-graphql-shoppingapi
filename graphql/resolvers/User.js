@@ -19,7 +19,7 @@ const includeAccessToken = user => {
   return userObject;
 };
 var omise = require("omise")({
-  publicKey: process.env.OMISE_PUBLIC_KEY, 
+  publicKey: process.env.OMISE_PUBLIC_KEY,
   secretKey: process.env.OMISE_SECRET_KEY
 });
 async function makeCharge(amount, id) {
@@ -109,17 +109,17 @@ class UserController {
   }
   usersOrder(data) {
     return this.model
-      .find({ })
+      .find({})
       .populate({ path: "order.orderProduct.product", model: "Product" })
       .exec()
       .then(record => {
         let newRecord = _.forEach(record, function(value) {
-          let order = _.filter(value.order, function(item){
+          let order = _.filter(value.order, function(item) {
             return item.status === data.status;
-          })
-          value.order = order
+          });
+          value.order = order;
         });
-        console.log(newRecord)
+        console.log(newRecord);
         return record;
       })
       .catch(error => {
@@ -133,10 +133,10 @@ class UserController {
       .populate({ path: "order.orderProduct.product", model: "Product" })
       .exec()
       .then(record => {
-        console.log(data)
-        let order = _.filter(record.order, function(item){
+        console.log(data);
+        let order = _.filter(record.order, function(item) {
           return item.status === data.status;
-        })
+        });
         return order;
       })
       .catch(error => {
@@ -180,16 +180,16 @@ class UserController {
       .findOne({ _id: user.id })
       .exec()
       .then(record => {
-        console.log(data)
+        console.log(data);
         if (bcrypt.compareSync(data.oldPassword, user.password)) {
-        }else{
+        } else {
           return new Error("Invalid login credentials.");
         }
 
         let mobileNumberModified = false;
 
-        if (data.password == "") data.password = data.oldPassword
-        delete data.oldPassword
+        if (data.password == "") data.password = data.oldPassword;
+        delete data.oldPassword;
         Object.keys(data).map(field => {
           if (field == "mobileNumber" && data[field] != user.mobileNumber) {
             mobileNumberModified = true;
@@ -202,7 +202,7 @@ class UserController {
           }
           record[field] = data[field];
         });
-        
+
         return record
           .save()
           .then(user => {
@@ -385,7 +385,7 @@ class UserController {
   }
 
   // this will update existing record in database
-  updateOrder(data) {
+  createPayment(data) {
     return this.model
       .findOne({ "order._id": data.id })
       .populate({ path: "order.orderProduct.product", model: "Product" })
@@ -414,6 +414,32 @@ class UserController {
       });
   }
 
+  cancelOrder(user, data) {
+    return this.model
+      .findById(user.id)
+      .populate({ path: "order.orderProduct.product", model: "Product" })
+      .exec()
+      .then(user => {
+        let order = user.order.id(data.id);
+        if (!order) throw new Error("Order not found");
+        //console.log(order)
+
+        order["status"] = "cancel";
+        //console.log(user)
+        return user
+          .save()
+          .then(user => {
+            return { message: 'ok' };
+          })
+          .catch(error => {
+            return error;
+          });
+      })
+      .catch(error => {
+        return error;
+      });
+  }
+
   updateCharge(data, res) {
     console.log("got in updatecharge resover");
     return this.model
@@ -436,6 +462,21 @@ class UserController {
         console.log(error);
         return error;
       });
+  }
+  async updateOrderStatus(data) {
+    console.log("got in updateOrderStatus resover");
+    let db = this.model;
+    _.forEach(data.id, function(value) {
+      db.updateOne({ "order._id": value }, { "order.$.status": data.status })
+        .exec()
+        .then(res => {
+          return res;
+        })
+        .catch(error => {
+          return error;
+        });
+    });
+    return { message: "ok" };
   }
 }
 const user_controller = new UserController();

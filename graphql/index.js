@@ -57,6 +57,8 @@ const RootMutation = new GraphQLObjectType({
 		deleteUserAddress: UserMutation.deleteAddress(),
 		addUserOrder:UserMutation.createOrder(),
 		createPayment:UserMutation.createPayment(),
+		updateOrderStatus:UserMutation.updateOrderStatus(),
+		cancelOrder:UserMutation.cancelOrder(),
 		//updateUserOrder:UserMutation.updateOrder(),
 		
 		//Category

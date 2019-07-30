@@ -340,8 +340,51 @@ module.exports = {
         }
       },
       resolve(parent, fields, context, info) {
-        return UserResolver.updateOrder(fields);
+        if (auth.isAuthenticated(context)) {
+          return UserResolver.createPayment(fields);
+        }
       }
     };
-  }
+  },
+  
+  cancelOrder() {
+    return {
+      type: Generic.messageOutputType,
+      description: "Cancel User's order",
+
+      args: {        
+        id: {
+          type: new GraphQLNonNull(GraphQLID),
+          description: "Enter id"
+        }
+      },
+      resolve(parent, fields, context, info) {
+        if (auth.isAuthenticated(context)) {
+          return UserResolver.cancelOrder(context.user, fields);
+        }
+      }
+    };
+  },
+  updateOrderStatus() {
+    return {
+      type: Generic.messageOutputType,
+      description: "update Users order status",
+
+      args: {
+        id: {
+          type: new GraphQLNonNull(GraphQLList(GraphQLID)),
+          description: "Enter id"
+        },
+        status: {
+          type: new GraphQLNonNull(GraphQLString),
+          description: "Status"
+        }
+      },
+      resolve(parent, fields, context, info) {
+        if (auth.isAuthenticated(context)) {
+          return UserResolver.updateOrderStatus(fields);
+        }
+      }
+    };
+  },
 };

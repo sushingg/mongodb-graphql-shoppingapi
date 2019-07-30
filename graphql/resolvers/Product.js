@@ -19,7 +19,7 @@ class ProductController {
     if(options.subCategory){query.subCategory = options.subCategory}
     if(options.incDraft != true ){query.published = true}
     options.sort = { createdAt: -1 }
-    console.log(options)
+    //console.log(options)
     return this.model
       .paginate(query, options)
       .then(records => {
@@ -32,13 +32,14 @@ class ProductController {
       });
   }
   search(options) {
-    
+    let draft = false
+    if(options.incDraft != true ){draft = true}
     let keyword = new RegExp(options.keyword);
-    console.log(options)
+    //console.log(options)
     return this.model
-      .find({title: { $regex: keyword , $options: 'i' } })
+      .find({title: { $regex: keyword , $options: 'i' },published:draft })
       .then(records => {
-        console.log(records)
+        //console.log(records)
         return records;
       })
       .catch(error => {

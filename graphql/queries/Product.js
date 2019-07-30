@@ -65,6 +65,10 @@ module.exports = {
 				slug: {
 					type: GraphQLString,
 					description: 'Please enter product slug',
+				},
+				incDraft: {
+					type: GraphQLBoolean,
+					description: 'include draft',
 				}
 			},
 			resolve(parent, args, context, info) {
