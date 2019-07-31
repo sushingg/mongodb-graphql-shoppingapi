@@ -4,7 +4,9 @@ const hook = (data,res) => {
 	console.log(data)
 	if(data.data.object === 'charge'){
 		console.log(data.data.status)
-		var params = {paymentId:data.data.id,status:data.data.status,id:data.data.metadata.order_id}
+		let status = ""
+		if (data.data.status === "successful") status = "successful"
+		var params = {paymentId:data.data.id,status:status,id:data.data.metadata.order_id}
         UserResolver.updateCharge(params,res)
         //return res.status(200).send('ok');
 	}
