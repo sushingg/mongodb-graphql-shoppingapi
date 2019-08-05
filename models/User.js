@@ -33,7 +33,8 @@ var orderSchema = new mongoose.Schema(
   {
     paymentId: String,
     total: Number,
-    status: { type: String, default: "" },
+    name: String,
+    status: { type: String, default: "wait" },
     address: addressSchema,
     orderProduct: [orderProductSchema],
   },

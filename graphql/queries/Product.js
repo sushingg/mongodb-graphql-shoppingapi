@@ -45,6 +45,14 @@ module.exports = {
 				incDraft: {
 					type: GraphQLBoolean,
 					description: 'include draft',
+				},
+				sortBy: {
+					type: GraphQLString,
+					description: 'fild to sort in "title, price, quintity"',
+				},
+				sortType: {
+					type: GraphQLString,
+					description: 'Asc Desc',
 				}
 			},
 			resolve(parent, args, context, info) {

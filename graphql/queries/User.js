@@ -32,13 +32,21 @@ module.exports = {
 	},
 	usersOrder() {
 		return {
-			type: new GraphQLList(UserType),
+			type: new GraphQLList(OrderType),
 			description: 'This will return data of a single users based on the id provided',
 			args: {
 				status: {
 					type: GraphQLString,
 					description: 'status of order',
-				}
+				},
+				dateForm: {
+					type: GraphQLString,
+					description: 'Date form',
+				},
+				dateTo: {
+					type: GraphQLString,
+					description: 'Date to',
+				},
 			},
 			resolve(parent, args, context, info) {
 				return UserResolver.usersOrder(args);

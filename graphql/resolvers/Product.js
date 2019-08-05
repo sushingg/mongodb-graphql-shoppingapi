@@ -19,6 +19,26 @@ class ProductController {
     if(options.subCategory){query.subCategory = options.subCategory}
     if(options.incDraft != true ){query.published = true}
     options.sort = { createdAt: -1 }
+    if (options.sortBy){
+      let sort = 1
+      if (options.sortType ==="desc") {
+        sort = -1
+      } 
+      switch(options.sortBy) {
+        case "title":
+          options.sort = { title: sort }
+          break;
+        case "price":
+          options.sort = { price: sort }
+          break;
+        case "quantity":
+          options.sort = { quantity: sort }
+          break;
+        case "date":
+          options.sort = { createdAt: sort }
+          break;
+      }
+    }
     //console.log(options)
     return this.model
       .paginate(query, options)

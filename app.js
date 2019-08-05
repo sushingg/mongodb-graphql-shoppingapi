@@ -45,7 +45,7 @@ app.use(cors())
 mongoose.connect(process.env.MONGODB, { useNewUrlParser: true });
 mongoose.connection.on('error', function () {
     console.log('MongoDB Connection Error. Please make sure that MongoDB is running.');
-    process.exit(1);
+    //process.exit(1);
 }).on('open', function () {
     console.log('Connection extablised with MongoDB')
 });

@@ -25,6 +25,10 @@ const UserType = new GraphQL.GraphQLObjectType({
             type:  GraphQLString,
 			description: 'Order payment id',
 		},
+		name: {
+            type:  GraphQLString,
+			description: 'user name',
+		},
         total: {
 			type: GraphQLInt,
 			description: 'Order total',

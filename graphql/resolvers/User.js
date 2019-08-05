@@ -109,18 +109,34 @@ class UserController {
   }
   usersOrder(data) {
     return this.model
-      .find({})
+      .find({},null,{ $sort: { '$.order.updatedAt': -1}})
       .populate({ path: "order.orderProduct.product", model: "Product" })
       .exec()
       .then(record => {
+        let newOrder = []
         let newRecord = _.forEach(record, function(value) {
-          let order = _.filter(value.order, function(item) {
-            return item.status === data.status;
-          });
-          value.order = order;
+          
+          console.log(data.status)
+          if (data.status){
+            let order = _.filter(value.order, function(item) {
+              return item.status === data.status;
+            });
+            newOrder.push(order)
+          }else {
+            newOrder.push(value.order)
+          }         
         });
-        console.log(newRecord);
-        return record;
+        
+        newOrder = _.flatten(newOrder)
+        if (data.dateForm && data.dateTo){
+
+          newOrder = _.filter(newOrder, function(item) {
+            return item.updatedAt >= parseInt(data.dateForm) && item.updatedAt <= parseInt(data.dateTo);
+          });
+        }
+        newOrder = _.orderBy(newOrder, ['updatedAt'],['desc']);
+        //console.log(newRecord);
+        return newOrder;
       })
       .catch(error => {
         return error;
@@ -332,6 +348,7 @@ class UserController {
         return Product.find({ $or: productSlug })
           .exec()
           .then(pd => {
+            data.name = record.name
             data.total = 0;
             _.forEach(data.orderProduct, function(value, key) {
               let thisp = _.find(pd, { slug: value.slug });
