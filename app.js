@@ -24,7 +24,19 @@ const User = require('./models/User');
 // let's import the schema file we just created
 const GraphQLSchema = require('./graphql');
 const cors = require('cors')
+const updateExpiredProducts = require('./middleware/updateExpiredProducts.js')
+var schedule = require('node-schedule');
 
+/**
+ * Every minutes
+ */
+
+updateExpiredProducts();
+schedule.scheduleJob('* * * * *', function () {
+    //Executes every minutes
+    updateExpiredProducts();
+    console.log("everyminutes")
+});
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  *
