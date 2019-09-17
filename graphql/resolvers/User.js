@@ -131,12 +131,47 @@ class UserController {
         if (data.dateForm && data.dateTo){
 
           newOrder = _.filter(newOrder, function(item) {
-            return item.updatedAt >= parseInt(data.dateForm) && item.updatedAt <= parseInt(data.dateTo);
+            return item.createdAt >= parseInt(data.dateForm) && item.createdAt <= parseInt(data.dateTo);
           });
         }
         newOrder = _.orderBy(newOrder, ['updatedAt'],['desc']);
         //console.log(newRecord);
         return newOrder;
+      })
+      .catch(error => {
+        return error;
+      });
+  }
+
+  sumOrder(data) {
+    return this.model
+      .find({},null,{ $sort: { '$.order.updatedAt': -1}})
+      .populate({ path: "order.orderProduct.product", model: "Product" })
+      .exec()
+      .then(record => {
+        let newOrder = []
+        let newRecord = _.forEach(record, function(value) {
+          let order = _.filter(value.order, function(item) {
+            return item.status !== "wait";
+          });
+          newOrder.push(order)
+        });
+        newOrder = _.flatten(newOrder)
+        if (data.dateForm && data.dateTo){
+
+          newOrder = _.filter(newOrder, function(item) {
+            return item.createdAt >= parseInt(data.dateForm) && item.createdAt <= parseInt(data.dateTo);
+          });
+        }
+        newOrder = _.orderBy(newOrder, ['updatedAt'],['desc']);
+        
+        let newSum = []
+       _.forEach(newOrder, function(value) {
+          newSum.push(value.orderProduct)
+        });
+        
+        //console.log(newSum);
+        return _.flatten(newSum);
       })
       .catch(error => {
         return error;

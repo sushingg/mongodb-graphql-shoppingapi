@@ -30,6 +30,7 @@ const RootQuery = new GraphQLObjectType({
 		userAddress: UserQuery.userAddress(),
 		userOrder: UserQuery.userOrder(),
 		usersOrder: UserQuery.usersOrder(),
+		sumOrder: UserQuery.sumOrder(),
 		myOrder: UserQuery.myOrder(),
 		//Category
 		categories:CategoryQuery.index(),

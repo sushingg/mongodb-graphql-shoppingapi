@@ -381,7 +381,7 @@ module.exports = {
         }
       },
       resolve(parent, fields, context, info) {
-        if (auth.isAuthenticated(context)) {
+        if (auth.isStaff(context)) {
           return UserResolver.updateOrderStatus(fields);
         }
       }

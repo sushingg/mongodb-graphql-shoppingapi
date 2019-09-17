@@ -13,6 +13,7 @@ const {
 const UserType = require('../types/User');
 const AddressType = require('../types/Address');
 const OrderType = require('../types/Order')
+const OrderProductType = require('../types/OrderProduct')
 // import the user resolver we created
 const UserResolver = require('../resolvers/User');
 
@@ -50,6 +51,25 @@ module.exports = {
 			},
 			resolve(parent, args, context, info) {
 				return UserResolver.usersOrder(args);
+			}
+		}
+	},
+	sumOrder() {
+		return {
+			type: new GraphQLList(OrderProductType),
+			description: 'This will return data of a single users based on the id provided',
+			args: {
+				dateForm: {
+					type: GraphQLString,
+					description: 'Date form',
+				},
+				dateTo: {
+					type: GraphQLString,
+					description: 'Date to',
+				},
+			},
+			resolve(parent, args, context, info) {
+				return UserResolver.sumOrder(args);
 			}
 		}
 	},
