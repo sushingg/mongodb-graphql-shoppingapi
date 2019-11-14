@@ -3,7 +3,7 @@ NodeJs + MongoDB + GraphQL
 
 Original version form [https://github.com/ailoitte/node-mongodb-graphql-starter](https://github.com/ailoitte/node-mongodb-graphql-starter)
 
-Use with react-graphql frontend [https://github.com/sushingg/TechE-React](https://github.com/sushingg/TechE-React)
+Use with this react-graphql frontend [https://github.com/sushingg/React-GraphQL-Ecommerce-webapp](https://github.com/sushingg/React-GraphQL-Ecommerce-webapp)
 
 Table of Contents
 -----------------
