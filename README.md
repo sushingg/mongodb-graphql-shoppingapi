@@ -5,6 +5,8 @@ Original version form [https://github.com/ailoitte/node-mongodb-graphql-starter]
 
 Use with this react-graphql frontend [https://github.com/sushingg/React-GraphQL-Ecommerce-webapp](https://github.com/sushingg/React-GraphQL-Ecommerce-webapp)
 
+Using [Omise](https://www.omise.co/) As payment system
+
 Table of Contents
 -----------------
 - [Features](#features)
@@ -19,6 +21,8 @@ Features
 - **Local Authentication** using Email and Password
 - MVC Project Structure
 - GraphQL Mutations, Queries, Resolvers
+- Omise Api include for payment system
+- Auto update order paid status by omise hooks
 - **Account Management**
      - Register
      - Login
@@ -27,6 +31,16 @@ Features
      - Add user address
      - Update Address
      - Remove Address
+- **Shop System**
+     - shopping cart
+     - checkout
+     - Add product     
+     - Update product
+     - Remove product
+     - Add category
+     - Update category
+     - Remove category
+     - Update Order Status (paid status will update by Omise hook's api)
 - Cron job scheduler
 - JSON Web Token (JWT) Sign in
 
@@ -36,7 +50,7 @@ Prerequisites
 
 - [MongoDB](https://www.mongodb.org/downloads)
 - [Node.js 6.0+](http://nodejs.org)
-
+- [Omise](https://www.omise.co/)
 
 Getting Started
 ---------------
